@@ -6,7 +6,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 **"Автоматизация учёта производительности компании и расчёт рентабельности"**
 
-Web-приложение на Google Apps Script с двумя ролями: менеджер (admin) и сотрудник (client). ~30 пользователей, авторизация по логину/паролю. Данные хранятся в Google Sheets.
+Web-приложение на Google Apps Script с двумя ролями: менеджер (admin) и сотрудник (client). ~30 пользователей, авторизация по логину/паролю. Данные хранятся в Google Sheets. Полный PRD — в `prd.md`.
 
 ## Architecture
 
@@ -18,6 +18,20 @@ Google Apps Script Web App
 
 GmailApp Trigger      →  парсинг писем СКУД → лист Attendance
 ```
+
+## Deployment (Google Apps Script)
+
+```bash
+npm install -g @google/clasp   # установить clasp
+clasp login                    # авторизация
+clasp push                     # запушить изменения в GAS
+clasp open                     # открыть редактор GAS
+```
+
+Файл `.clasp.json` хранит `scriptId` проекта. Основные файлы GAS:
+- `Code.gs` — серверная логика (`doGet`, `doPost`, бизнес-логика)
+- `Index.html` — фронтенд (HTML/CSS/JS, single-page)
+- `appsscript.json` — манифест (права доступа, тайм-зона)
 
 ## Google Sheets (база данных)
 
@@ -54,13 +68,46 @@ ID: `1pziBY8pv85-fnkNrH81A9-VenWsnFn5IVc4DAXcCFFk`
 | QuantityLogs | Кол-во обработанного товара на каждое событие |
 | Attendance | Сводный табель (AppScript + СКУД) |
 
+## Business Logic
+
+### Жизненный цикл задания (сотрудник)
+
+1. Получает задание → нажимает **Старт** → пишется запись в TimeLogs
+2. При перерыве → **Пауза** / **Возобновить**
+3. При завершении → **Закончил полностью** (количество не вводится) или **Закончил частично** (+ вводит количество)
+4. Следующий день → **Продолжить выполнение задания**
+5. Менеджер может переназначить незавершённое задание другому сотруднику
+
+### Расчёт рентабельности
+
+```
+Выручка = количество товара × тариф клиента
+Себестоимость = время сотрудника × ставка + материалы
+Рентабельность = Выручка − Себестоимость
+```
+
+### Авторизация
+
+Хэши паролей хранятся в листе `Users`; сессия — через `PropertiesService` или токен в клиенте.
+
+## Data Flow
+
+```
+Сотрудник (браузер)
+  → google.script.run.serverFunction()   # GAS клиент-серверный вызов
+  → Code.gs (doPost / named functions)
+  → SpreadsheetApp                       # чтение/запись Google Sheets
+```
+
 ## Development Phases
 
-1. **Фаза 1** — Авторизация + задания (выдача менеджером, просмотр сотрудником)
-2. **Фаза 2** — Кнопки Старт/Пауза/Стоп, запись TimeLogs
-3. **Фаза 3** — Ввод количества, расчёт себестоимости и рентабельности
-4. **Фаза 4** — Парсинг СКУД из Gmail, сверка с TimeLogs
-5. **Фаза 5** — Дашборд с метриками (ABC-анализ, гистограммы, KPI)
+| Фаза | Описание | Статус |
+|------|----------|--------|
+| 1 | Авторизация + задания (выдача менеджером, просмотр сотрудником) | в работе |
+| 2 | Кнопки Старт/Пауза/Стоп, запись TimeLogs | — |
+| 3 | Ввод количества, расчёт себестоимости и рентабельности | — |
+| 4 | Парсинг СКУД из Gmail, сверка с TimeLogs | — |
+| 5 | Дашборд с метриками (ABC-анализ, гистограммы, KPI) | — |
 
 ## MCP Tools (Google Sheets)
 
@@ -68,6 +115,24 @@ ID: `1pziBY8pv85-fnkNrH81A9-VenWsnFn5IVc4DAXcCFFk`
 
 Ключевые инструменты: `sheets_get_metadata`, `sheets_get_values`, `sheets_batch_get_values`, `sheets_update_values`, `sheets_batch_update_values`, `sheets_append_values`, `sheets_format_cells`.
 
+## Statusline
+
+`statusline.js` — Node.js скрипт для строки состояния Claude Code. Читает JSON из stdin, выводит: модель │ задача │ директория │ git-статус │ контекст │ rate limits │ пиковые часы (Pacific Time).
+
+Запуск для проверки:
+```bash
+echo '{}' | node statusline.js
+```
+
+`.claude/statusline-command.sh` — упрощённая bash-версия (используется в `settings.local.json` как `statusLine.command`). `statusline.js` — расширенная версия с git-интеграцией, bridge-файлом контекста и peak-hours индикатором.
+
 ## Settings
 
-`.claude/settings.local.json` — включает MCP `google-sheets`, управляет разрешениями инструментов.
+`.claude/settings.local.json`:
+- MCP сервер `google-sheets` включён (`enableAllProjectMcpServers: true`)
+- `statusLine.command` указывает на `.claude/statusline-command.sh`
+- Разрешения: `mcp__google-sheets__sheets_get_metadata`, `Bash(code *)`
+
+## Current State (апрель 2026)
+
+GAS-файлы (`Code.gs`, `Index.html`, `appsscript.json`, `.clasp.json`) ещё не созданы — проект на стадии планирования/настройки окружения. Фаза 1 (авторизация + задания) в работе.
