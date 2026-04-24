@@ -1,0 +1,22 @@
+{
+  "permissions": {
+    "allow": [
+      "mcp__google-sheets__sheets_get_metadata",
+      "Bash(code *)",
+      "Bash(node statusline.js)",
+      "Bash(node .claude/statusline.js)",
+      "Bash(git add *)",
+      "Bash(git commit -m ' *)",
+      "Bash(git push *)"
+    ]
+  },
+  "enableAllProjectMcpServers": true,
+  "enabledMcpjsonServers": [
+    "google-sheets"
+  ],
+  "statusLine": {
+    "type": "command",
+    "command": "node 'C:/_AKI/ClaudeCode/tbox_dashboard_v02/.claude/statusline.js'"
+  },
+  "spinnerTipsEnabled": true
+}
