@@ -1,0 +1,12 @@
+name: Morning
+
+on:
+  schedule:
+    - cron: '0 5 * * *'
+
+jobs:
+  say-hello:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Поехали
+        run: echo "Поехали!"
