@@ -33,6 +33,15 @@ clasp open                     # открыть редактор GAS
 - `Index.html` — фронтенд (HTML/CSS/JS, single-page)
 - `appsscript.json` — манифест (права доступа, тайм-зона)
 
+## GAS Constraints
+
+- Нет `require()` / npm — весь код в `.gs`-файлах, библиотеки подключаются через редактор GAS
+- `google.script.run` — **асинхронный**, требует `.withSuccessHandler()` / `.withFailureHandler()`
+- Лимит выполнения — **6 минут** на один вызов
+- `doGet(e)` обязан вернуть `HtmlService.createHtmlOutput(...)` или `ContentService`
+- `doPost(e)` получает тело запроса через `e.postData.contents` (JSON-строка → `JSON.parse`)
+- `PropertiesService` — единственное постоянное хранилище на стороне сервера (сессии, токены)
+
 ## Google Sheets (база данных)
 
 ### Spreadsheet: Производительность
@@ -63,13 +72,20 @@ ID: `1pziBY8pv85-fnkNrH81A9-VenWsnFn5IVc4DAXcCFFk`
 
 Создавать в таблице **Сотрудники 2026** (`1pziBY8pv85-fnkNrH81A9-VenWsnFn5IVc4DAXcCFFk`):
 
-| Лист | Назначение |
-|------|-----------|
-| Users | Логины, хэши паролей, роли, ФИО |
-| Tasks | Задания: сотрудник, клиент, операция, план, статус |
-| TimeLogs | События: старт/пауза/стоп + timestamps |
-| QuantityLogs | Кол-во обработанного товара на каждое событие |
-| Attendance | Сводный табель (AppScript + СКУД) |
+**Users** — авторизация
+`id | login | passwordHash | role (admin|client) | fullName | active`
+
+**Tasks** — задания
+`id | employeeId | clientId | operationId | planQty | status (new|in_progress|paused|done|partial) | assignedAt | assignedBy`
+
+**TimeLogs** — события таймера
+`id | taskId | employeeId | event (start|pause|resume|stop) | timestamp`
+
+**QuantityLogs** — количество при стопе
+`id | taskId | employeeId | qty | loggedAt`
+
+**Attendance** — табель посещаемости
+`id | employeeId | date | timeIn | timeOut | source (skud|manual)`
 
 ## Business Logic
 
@@ -115,7 +131,7 @@ ID: `1pziBY8pv85-fnkNrH81A9-VenWsnFn5IVc4DAXcCFFk`
 
 ## MCP Tools (Google Sheets)
 
-Доступ через `google-sheets` MCP сервер. Схемы инструментов — deferred, загружать через `ToolSearch` перед вызовом.
+Доступ через `google-sheets` MCP сервер. Требует `.mcp.json` в корне проекта (не создан — настроить отдельно). Схемы инструментов — deferred, загружать через `ToolSearch` перед вызовом.
 
 Полный список инструментов:
 
@@ -163,20 +179,8 @@ echo '{}' | node statusline.js
 
 `.claude/settings.local.json`:
 - MCP сервер `google-sheets` включён (`enableAllProjectMcpServers: true`)
-- `statusLine.command` указывает на `.claude/statusline-command.sh`
+- `statusLine.command` — путь к `.claude/statusline.js` (обновить под локальную ОС)
 - Разрешения: `mcp__google-sheets__sheets_get_metadata`, `Bash(code *)`
-
-## Dashboard KPI (Фаза 5)
-
-Метрики из `prd.md` для дашборда (фильтры: период, сотрудник, услуга, клиент):
-
-- Количество обработанного товара и темп обработки
-- Гистограмма выработки по дням
-- Время простоя (порог + эскалация при превышении)
-- Лучший/худший исполнитель по темпу
-- Выручка по клиенту / сотруднику / услуге
-- ABC-анализ рентабельности клиентов
-- Сверка табеля: время на складе vs СКУД
 
 ## Current State (апрель 2026)
 
