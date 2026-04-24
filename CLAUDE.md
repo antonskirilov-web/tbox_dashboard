@@ -48,7 +48,7 @@ clasp open                     # открыть редактор GAS
 ID: `1v9KJuBGUiStzdS6oUvyODnxpUBUkIHQV3-KXDls7cbQ`
 
 | Лист | sheetId | Назначение |
-|------|---------|----------|
+|------|---------|-----------|
 | Исходник (2026)_init | 1496055204 | Исходные данные выработки 2026 (начальная версия) |
 | Исходник (2026)_ver.01 | 2100796552 | Данные выработки 2026 г. (активный) |
 | 2_Услуги_Цены_Темпы | 1346228000 | Справочник услуг, цен и темпов обработки |
@@ -61,7 +61,7 @@ ID: `1v9KJuBGUiStzdS6oUvyODnxpUBUkIHQV3-KXDls7cbQ`
 ID: `1pziBY8pv85-fnkNrH81A9-VenWsnFn5IVc4DAXcCFFk`
 
 | Лист | sheetId | Назначение |
-|------|---------|----------|
+|------|---------|-----------|
 | ЗП Главное | 1484917861 | Расчёт зарплат |
 | СКУД | 357511922 | Данные face ID (посещаемость) |
 | Подработчики | 2042830266 | Данные по подработчикам |
@@ -131,12 +131,12 @@ ID: `1pziBY8pv85-fnkNrH81A9-VenWsnFn5IVc4DAXcCFFk`
 
 ## MCP Tools (Google Sheets)
 
-Доступ через `google-sheets` MCP сервер. Требует `.mcp.json` в корне проекта (не создан — настроить отдельно). Схемы инструментов — deferred, загружать через `ToolSearch` перед вызовом.
+Доступ через `google-sheets` MCP сервер. Сервер активируется через `enableAllProjectMcpServers: true` в `.claude/settings.local.json` (глобальная конфигурация MCP, не требует `.mcp.json` в корне). Схемы инструментов — deferred, загружать через `ToolSearch` перед вызовом.
 
 Полный список инструментов:
 
 | Инструмент | Назначение |
-|-----------|----------|
+|-----------|-----------|
 | `sheets_get_metadata` | Метаданные таблицы (листы, ID) |
 | `sheets_get_values` | Чтение диапазона |
 | `sheets_batch_get_values` | Чтение нескольких диапазонов |
@@ -164,23 +164,27 @@ ID: `1pziBY8pv85-fnkNrH81A9-VenWsnFn5IVc4DAXcCFFk`
 | `sheets_check_access` | Проверка прав доступа |
 | `sheets_update_sheet_properties` | Свойства листа (название, цвет вкладки) |
 
+## GitHub Actions
+
+`.github/workflows/morning.yml` — ежедневный cron-job, запускается в **8:00 МСК** (5:00 UTC), выводит `Поехали!`. Служит шаблоном для будущих автоматизаций (ночные отчёты, экспорт данных и т.п.).
+
 ## Statusline
 
-`statusline.js` — Node.js скрипт для строки состояния Claude Code. Читает JSON из stdin, выводит: модель │ задача │ директория │ git-статус │ контекст │ rate limits │ пиковые часы (Pacific Time).
+`.claude/statusline.js` — Node.js скрипт строки состояния Claude Code. Читает JSON из stdin, выводит: модель │ задача │ директория │ git-статус │ контекст │ rate limits │ пиковые часы (Pacific Time).
 
 Запуск для проверки:
 ```bash
-echo '{}' | node statusline.js
+echo '{}' | node .claude/statusline.js
 ```
 
-`.claude/statusline-command.sh` — упрощённая bash-версия (используется в `settings.local.json` как `statusLine.command`). `statusline.js` — расширенная версия с git-интеграцией, bridge-файлом контекста и peak-hours индикатором.
+Пиковые часы: Пн–Пт, 05:00–11:00 PT (время Anthropic). Скрипт показывает обратный отсчёт до начала/конца пика.
 
 ## Settings
 
 `.claude/settings.local.json`:
 - MCP сервер `google-sheets` включён (`enableAllProjectMcpServers: true`)
-- `statusLine.command` — путь к `.claude/statusline.js` (обновить под локальную ОС)
-- Разрешения: `mcp__google-sheets__sheets_get_metadata`, `Bash(code *)`
+- `statusLine.command` указывает на `.claude/statusline.js` с **абсолютным путём** — при смене машины обновить путь
+- Разрешения (allow): `mcp__google-sheets__sheets_get_metadata`, `Bash(code *)`, `Bash(node .claude/statusline.js)`, `Bash(git add *)`, `Bash(git commit *)`, `Bash(git push *)`, `Bash(git pull *)`
 
 ## Current State (апрель 2026)
 
