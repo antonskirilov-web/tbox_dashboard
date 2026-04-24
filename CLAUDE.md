@@ -46,6 +46,7 @@ ID: `1v9KJuBGUiStzdS6oUvyODnxpUBUkIHQV3-KXDls7cbQ`
 | 1_Библиотека | 14199843 | Справочник клиентов и операций |
 | План/факт Общий | 594472193 | Сводный план/факт |
 | План/факт Сотр. | 416839089 | План/факт по сотрудникам |
+| тестовый лист cli | 668253734 | Тестовый лист (создан через MCP CLI) |
 
 ### Spreadsheet: Сотрудники 2026
 ID: `1pziBY8pv85-fnkNrH81A9-VenWsnFn5IVc4DAXcCFFk`
@@ -59,6 +60,8 @@ ID: `1pziBY8pv85-fnkNrH81A9-VenWsnFn5IVc4DAXcCFFk`
 | Ставки | 929371880 | Ставки оплаты |
 
 ### Новые листы (создать в рамках проекта)
+
+Создавать в таблице **Сотрудники 2026** (`1pziBY8pv85-fnkNrH81A9-VenWsnFn5IVc4DAXcCFFk`):
 
 | Лист | Назначение |
 |------|-----------|
@@ -113,7 +116,36 @@ ID: `1pziBY8pv85-fnkNrH81A9-VenWsnFn5IVc4DAXcCFFk`
 
 Доступ через `google-sheets` MCP сервер. Схемы инструментов — deferred, загружать через `ToolSearch` перед вызовом.
 
-Ключевые инструменты: `sheets_get_metadata`, `sheets_get_values`, `sheets_batch_get_values`, `sheets_update_values`, `sheets_batch_update_values`, `sheets_append_values`, `sheets_format_cells`.
+Полный список инструментов:
+
+| Инструмент | Назначение |
+|-----------|-----------|
+| `sheets_get_metadata` | Метаданные таблицы (листы, ID) |
+| `sheets_get_values` | Чтение диапазона |
+| `sheets_batch_get_values` | Чтение нескольких диапазонов |
+| `sheets_update_values` | Запись в диапазон |
+| `sheets_batch_update_values` | Запись в несколько диапазонов |
+| `sheets_append_values` | Добавление строк |
+| `sheets_clear_values` | Очистка диапазона |
+| `sheets_insert_sheet` | Создание нового листа |
+| `sheets_delete_sheet` | Удаление листа |
+| `sheets_duplicate_sheet` | Копирование листа |
+| `sheets_insert_rows` | Вставка строк |
+| `sheets_format_cells` | Форматирование ячеек |
+| `sheets_batch_format_cells` | Пакетное форматирование |
+| `sheets_merge_cells` | Объединение ячеек |
+| `sheets_unmerge_cells` | Разъединение ячеек |
+| `sheets_update_borders` | Границы ячеек |
+| `sheets_insert_link` | Вставка гиперссылки |
+| `sheets_insert_date` | Вставка даты |
+| `sheets_add_conditional_formatting` | Условное форматирование |
+| `sheets_create_chart` | Создание графика |
+| `sheets_update_chart` | Обновление графика |
+| `sheets_delete_chart` | Удаление графика |
+| `sheets_copy_to` | Копирование листа в другую таблицу |
+| `sheets_create_spreadsheet` | Создание новой таблицы |
+| `sheets_check_access` | Проверка прав доступа |
+| `sheets_update_sheet_properties` | Свойства листа (название, цвет вкладки) |
 
 ## Statusline
 
@@ -132,6 +164,18 @@ echo '{}' | node statusline.js
 - MCP сервер `google-sheets` включён (`enableAllProjectMcpServers: true`)
 - `statusLine.command` указывает на `.claude/statusline-command.sh`
 - Разрешения: `mcp__google-sheets__sheets_get_metadata`, `Bash(code *)`
+
+## Dashboard KPI (Фаза 5)
+
+Метрики из `prd.md` для дашборда (фильтры: период, сотрудник, услуга, клиент):
+
+- Количество обработанного товара и темп обработки
+- Гистограмма выработки по дням
+- Время простоя (порог + эскалация при превышении)
+- Лучший/худший исполнитель по темпу
+- Выручка по клиенту / сотруднику / услуге
+- ABC-анализ рентабельности клиентов
+- Сверка табеля: время на складе vs СКУД
 
 ## Current State (апрель 2026)
 
