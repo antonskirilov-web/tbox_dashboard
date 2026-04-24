@@ -3,7 +3,8 @@
     "allow": [
       "mcp__google-sheets__sheets_get_metadata",
       "Bash(code *)",
-      "Bash(node statusline.js)"
+      "Bash(node statusline.js)",
+      "Bash(node .claude/statusline.js)"
     ]
   },
   "enableAllProjectMcpServers": true,
@@ -12,7 +13,7 @@
   ],
   "statusLine": {
     "type": "command",
-    "command": "bash 'C:/_AKI/ClaudeCode/tbox_dashboard_v02/.claude/statusline-command.sh'"
+    "command": "node 'C:/_AKI/ClaudeCode/tbox_dashboard_v02/.claude/statusline.js'"
   },
   "spinnerTipsEnabled": true
 }
