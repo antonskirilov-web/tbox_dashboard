@@ -2,8 +2,11 @@
 <html lang="ru">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Все деньги</title>
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover"
+    />
+    <title>Все деньги · ver. 3.0</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -29,12 +32,19 @@
 
       * {
         box-sizing: border-box;
+        min-width: 0;
       }
 
       html,
       body {
         margin: 0;
         min-height: 100%;
+        width: 100%;
+        min-width: 100%;
+        max-width: 100%;
+        overflow-x: hidden;
+        overscroll-behavior-x: none;
+        touch-action: pan-y;
         font-family: 'Manrope', sans-serif;
         background:
           radial-gradient(circle at top left, rgba(82, 195, 11, 0.18), transparent 34%),
@@ -42,13 +52,36 @@
         color: var(--text);
       }
 
+      html {
+        position: fixed;
+        inset: 0;
+        height: 100%;
+        overflow: hidden;
+      }
+
       body {
-        padding: 18px 14px 28px;
+        position: relative;
+        left: 0;
+        right: 0;
+        width: 100dvw;
+        max-width: 100dvw;
+        height: 100dvh;
+        margin-left: 0;
+        margin-right: 0;
+        overflow-y: auto;
+        overflow-x: hidden;
+        -webkit-overflow-scrolling: touch;
+        touch-action: pan-y;
+        padding: max(10px, env(safe-area-inset-top)) 10px max(22px, env(safe-area-inset-bottom));
       }
 
       .app-shell {
-        width: min(100%, 480px);
+        width: min(calc(100dvw - 20px), 390px);
+        max-width: calc(100vw - 20px);
         margin: 0 auto;
+        overflow-x: clip;
+        overscroll-behavior-x: none;
+        touch-action: pan-y;
       }
 
       .hero {
@@ -58,8 +91,8 @@
           linear-gradient(135deg, rgba(82, 195, 11, 0.18), rgba(82, 195, 11, 0.05)),
           rgba(255, 255, 255, 0.68);
         border: 1px solid rgba(82, 195, 11, 0.14);
-        border-radius: var(--radius-xl);
-        padding: 22px 20px;
+        border-radius: 18px;
+        padding: 16px 14px;
         box-shadow: var(--shadow);
         backdrop-filter: blur(12px);
       }
@@ -67,10 +100,10 @@
       .hero::after {
         content: '';
         position: absolute;
-        right: -28px;
-        top: -28px;
-        width: 120px;
-        height: 120px;
+        right: -22px;
+        top: -22px;
+        width: 92px;
+        height: 92px;
         background: radial-gradient(circle, rgba(82, 195, 11, 0.25), transparent 70%);
       }
 
@@ -82,16 +115,18 @@
         border-radius: 999px;
         background: rgba(255, 255, 255, 0.72);
         color: var(--accent-deep);
-        font-size: 12px;
+        font-size: 11px;
         font-weight: 800;
-        letter-spacing: 0.04em;
+        letter-spacing: 0.02em;
         text-transform: uppercase;
+        max-width: 100%;
+        white-space: normal;
       }
 
       .hero__title {
         margin: 14px 0 8px;
-        font-size: 28px;
-        line-height: 1.05;
+        font-size: 23px;
+        line-height: 1.12;
         font-weight: 800;
       }
 
@@ -100,20 +135,25 @@
         max-width: 30ch;
         color: var(--muted);
         line-height: 1.5;
-        font-size: 14px;
+        font-size: 13px;
       }
 
       .form {
         display: grid;
-        gap: 14px;
-        margin-top: 18px;
+        gap: 12px;
+        margin-top: 12px;
+        width: 100%;
+        overflow-x: clip;
       }
 
       .panel {
+        width: 100%;
+        max-width: 100%;
+        overflow-x: clip;
         background: var(--surface);
         border: 1px solid var(--line);
-        border-radius: var(--radius-lg);
-        padding: 16px;
+        border-radius: 16px;
+        padding: 12px;
         box-shadow: 0 12px 28px rgba(45, 79, 23, 0.08);
       }
 
@@ -126,15 +166,19 @@
       .field-grid {
         display: grid;
         gap: 12px;
+        width: 100%;
+        max-width: 100%;
       }
 
       .two-col {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
+        grid-template-columns: 1fr;
       }
 
       .field {
         display: grid;
         gap: 8px;
+        width: 100%;
+        max-width: 100%;
       }
 
       .field label {
@@ -144,12 +188,17 @@
       }
 
       .input {
+        appearance: none;
+        -webkit-appearance: none;
         width: 100%;
+        max-width: 100%;
+        min-width: 0;
         border: 1px solid rgba(20, 33, 13, 0.12);
-        border-radius: var(--radius-md);
+        border-radius: 14px;
         background: var(--surface-strong);
-        padding: 15px 14px;
+        padding: 13px 11px;
         font: inherit;
+        font-size: 16px;
         color: var(--text);
         outline: none;
         transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
@@ -162,14 +211,19 @@
       .input:focus {
         border-color: var(--accent);
         box-shadow: 0 0 0 4px var(--accent-soft);
-        transform: translateY(-1px);
+        transform: none;
       }
 
       .section-head {
         display: flex;
         align-items: center;
         justify-content: space-between;
+        gap: 10px;
         margin-bottom: 14px;
+      }
+
+      .section-head .panel__title {
+        margin-bottom: 0;
       }
 
       .section-head__badge {
@@ -179,8 +233,11 @@
         min-width: 76px;
         padding: 8px 10px;
         border-radius: 999px;
-        font-size: 12px;
+        font-size: 11px;
         font-weight: 800;
+        line-height: 1.15;
+        text-align: center;
+        white-space: normal;
       }
 
       .section-head__badge--income {
@@ -226,14 +283,14 @@
 
       .submit-wrap {
         position: sticky;
-        bottom: 12px;
+        bottom: max(10px, env(safe-area-inset-bottom));
         padding-top: 4px;
       }
 
       .submit-btn {
         width: 100%;
         border: 0;
-        border-radius: 20px;
+        border-radius: 16px;
         padding: 16px 18px;
         background: linear-gradient(135deg, var(--accent), #69d616);
         color: #fff;
@@ -255,6 +312,17 @@
         cursor: wait;
       }
 
+      @media (min-width: 520px) {
+        .app-shell {
+          width: min(calc(100dvw - 28px), 430px);
+          max-width: calc(100vw - 28px);
+        }
+
+        .two-col {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+      }
+
       @media (min-width: 720px) {
         body {
           padding: 28px 18px 36px;
@@ -264,12 +332,40 @@
           font-size: 34px;
         }
       }
+
+      @media (max-width: 380px) {
+        body {
+          padding-left: 10px;
+          padding-right: 10px;
+        }
+
+        .hero {
+          padding: 16px 14px;
+        }
+
+        .hero__title {
+          font-size: 23px;
+        }
+
+        .panel {
+          padding: 12px;
+        }
+        .section-head {
+          align-items: flex-start;
+          flex-direction: column;
+        }
+
+        .section-head__badge {
+          justify-content: flex-start;
+          min-width: 0;
+        }
+      }
     </style>
   </head>
   <body>
     <main class="app-shell">
       <section class="hero">
-        <div class="hero__eyebrow">Все деньги · мобильная форма</div>
+        <div class="hero__eyebrow">Все деньги · ver. 5.0 · мобильная форма</div>
         <h1 class="hero__title">Новая запись в таблицу</h1>
         <p class="hero__text">
           Введите операцию, дату, суммы, контрагента и платёжку. Запись уйдёт
@@ -405,8 +501,11 @@
       const submitButton = document.getElementById('submit-btn');
       const statusBox = document.getElementById('status');
       const dateInput = document.getElementById('date');
+      let touchStartX = 0;
+      let touchStartY = 0;
 
       dateInput.value = getTodayLocalISO();
+      lockHorizontalViewport();
 
       form.addEventListener('submit', (event) => {
         event.preventDefault();
@@ -450,6 +549,54 @@
         const now = new Date();
         const local = new Date(now.getTime() - now.getTimezoneOffset() * 60000);
         return local.toISOString().slice(0, 10);
+      }
+
+      function lockHorizontalViewport() {
+        const resetHorizontalScroll = () => {
+          document.documentElement.scrollLeft = 0;
+          document.body.scrollLeft = 0;
+
+          if (window.scrollX !== 0) {
+            window.scrollTo(0, window.scrollY);
+          }
+        };
+
+        document.addEventListener(
+          'touchstart',
+          (event) => {
+            const touch = event.touches[0];
+            touchStartX = touch.clientX;
+            touchStartY = touch.clientY;
+          },
+          { passive: true }
+        );
+
+        document.addEventListener(
+          'touchmove',
+          (event) => {
+            const touch = event.touches[0];
+            const deltaX = Math.abs(touch.clientX - touchStartX);
+            const deltaY = Math.abs(touch.clientY - touchStartY);
+
+            if (deltaX > deltaY) {
+              event.preventDefault();
+              resetHorizontalScroll();
+            }
+          },
+          { passive: false }
+        );
+
+        window.addEventListener('scroll', resetHorizontalScroll, { passive: true });
+        document.addEventListener('focusin', () => {
+          resetHorizontalScroll();
+          setTimeout(resetHorizontalScroll, 50);
+          setTimeout(resetHorizontalScroll, 250);
+        });
+
+        if (window.visualViewport) {
+          window.visualViewport.addEventListener('scroll', resetHorizontalScroll);
+          window.visualViewport.addEventListener('resize', resetHorizontalScroll);
+        }
       }
     </script>
   </body>
