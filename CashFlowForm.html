@@ -537,7 +537,7 @@
             setLoading(false);
             showStatus(error.message || 'Не удалось сохранить запись.', 'error');
           })
-          .submitMoneyEntry(payload);
+          .submitCashflowMoneyEntry(payload);
       });
 
       function loadFormConfig() {
@@ -555,7 +555,7 @@
             userLine.textContent = 'Доступ к форме закрыт';
             showStatus(error.message || 'Не удалось определить Google аккаунт.', 'error');
           })
-          .getFormConfig();
+          .getCashflowFormConfig();
       }
 
       function fillCategoryOptions(categories) {
