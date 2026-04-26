@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover"
+    />
+    <title>T-Box Сотрудник 5</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      *, *::before, *::after {
+        box-sizing: border-box;
+        min-width: 0;
+      }
+
+      html, body {
+        margin: 0;
+        padding: 0;
+        font-family: 'Inter', system-ui, sans-serif;
+        -webkit-font-smoothing: antialiased;
+        background: #ffffff;
+        color: #1a1a1a;
+      }
+
+      body {
+        min-height: 100dvh;
+        padding:
+          max(16px, env(safe-area-inset-top))
+          max(16px, env(safe-area-inset-right))
+          max(32px, env(safe-area-inset-bottom))
+          max(16px, env(safe-area-inset-left));
+      }
+
+      /* ─── Layout container ─────────────────────────────────── */
+      .container {
+        width: 100%;
+        max-width: 480px;
+        margin: 0 auto;
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+      }
+
+      /* ─── Page title ───────────────────────────────────────── */
+      .page-title {
+        margin: 0;
+        font-size: 13px;
+        font-weight: 700;
+        letter-spacing: 0.10em;
+        text-transform: uppercase;
+        color: #888;
+        text-align: center;
+      }
+
+      /* ─── Block labels ─────────────────────────────────────── */
+      .block-label {
+        margin: 0 0 6px;
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 0.09em;
+        text-transform: uppercase;
+        color: #aaa;
+      }
+
+      /* ─── 1. Client name ───────────────────────────────────── */
+      .client-name {
+        margin: 0;
+        font-size: 30px;
+        font-weight: 800;
+        line-height: 1.15;
+        color: #1a1a1a;
+      }
+
+      /* ─── 2. Services list ─────────────────────────────────── */
+      .services-list {
+        margin: 0;
+        padding: 0;
+        list-style: none;
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+      }
+
+      .services-list li {
+        font-size: 24px;
+        font-weight: 700;
+        line-height: 1.2;
+        color: #222;
+        padding-left: 20px;
+        position: relative;
+      }
+
+      .services-list li::before {
+        content: '•';
+        position: absolute;
+        left: 0;
+        color: #aaa;
+      }
+
+      /* ─── 3. Tempo ─────────────────────────────────────────── */
+      .tempo-row {
+        display: flex;
+        align-items: baseline;
+        gap: 10px;
+      }
+
+      .tempo-row__label {
+        font-size: 24px;
+        font-weight: 600;
+        color: #555;
+      }
+
+      .tempo-row__value {
+        font-size: 26px;
+        font-weight: 800;
+        color: #1a1a1a;
+      }
+
+      /* ─── Divider ──────────────────────────────────────────── */
+      .divider {
+        border: none;
+        height: 1px;
+        background: #e8e8e8;
+        margin: 0;
+      }
+
+      /* ─── Buttons (shared) ─────────────────────────────────── */
+      .btn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        width: 100%;
+        border: none;
+        border-radius: 8px;
+        padding: 20px 18px;
+        font-family: inherit;
+        font-size: 24px;
+        font-weight: 800;
+        cursor: pointer;
+        transition: opacity 0.15s ease, transform 0.12s ease, filter 0.15s ease;
+        -webkit-tap-highlight-color: transparent;
+      }
+
+      .btn:active:not([disabled]) {
+        transform: scale(0.975) translateY(1px);
+      }
+
+      .btn[disabled] {
+        opacity: 0.4;
+        cursor: not-allowed;
+      }
+
+      /* 4. START */
+      .btn--start {
+        background: #28a745;
+        color: #fff;
+        box-shadow: 0 4px 16px rgba(40, 167, 69, 0.30);
+      }
+
+      .btn--start:hover:not([disabled]) {
+        filter: brightness(1.08);
+      }
+
+      /* 6. PAUSE / RESUME */
+      .btn--pause {
+        background: #007bff;
+        color: #fff;
+        font-size: 20px;
+        padding: 17px 18px;
+        box-shadow: 0 4px 14px rgba(0, 123, 255, 0.25);
+      }
+
+      .btn--pause:hover:not([disabled]) {
+        filter: brightness(1.08);
+      }
+
+      /* 7. STOP */
+      .btn--stop {
+        background: #dc3545;
+        color: #fff;
+        font-size: 20px;
+        padding: 17px 18px;
+        box-shadow: 0 4px 14px rgba(220, 53, 69, 0.25);
+      }
+
+      .btn--stop:hover:not([disabled]) {
+        filter: brightness(1.08);
+      }
+
+      /* 9. SUBMIT */
+      .btn--submit {
+        background: #343a40;
+        color: #fff;
+        font-size: 20px;
+        padding: 18px 18px;
+        box-shadow: 0 4px 14px rgba(52, 58, 64, 0.25);
+      }
+
+      .btn--submit:hover:not([disabled]) {
+        filter: brightness(1.15);
+      }
+
+      /* ─── 5. Timer ─────────────────────────────────────────── */
+      .timer-block {
+        text-align: center;
+        padding: 18px 0 10px;
+      }
+
+      .timer__label {
+        margin: 0 0 6px;
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 0.09em;
+        text-transform: uppercase;
+        color: #aaa;
+      }
+
+      .timer__value {
+        font-size: 64px;
+        font-weight: 800;
+        font-family: 'Inter', 'Courier New', monospace;
+        font-variant-numeric: tabular-nums;
+        letter-spacing: -0.02em;
+        line-height: 1;
+        color: #1a1a1a;
+        transition: color 0.25s ease;
+      }
+
+      .timer__value.is-running {
+        color: #28a745;
+      }
+
+      .timer__value.is-paused {
+        color: #fd7e14;
+      }
+
+      .timer__value.is-stopped {
+        color: #6f42c1;
+      }
+
+      .timer__status {
+        margin: 8px 0 0;
+        font-size: 13px;
+        font-weight: 600;
+        color: #aaa;
+        min-height: 18px;
+      }
+
+      /* ─── 8. Quantity input ────────────────────────────────── */
+      .qty-label {
+        display: block;
+        margin: 0 0 8px;
+        font-size: 16px;
+        font-weight: 600;
+        color: #333;
+      }
+
+      .input-qty {
+        width: 100%;
+        border: 2px solid #dee2e6;
+        border-radius: 8px;
+        background: #fff;
+        padding: 12px 14px;
+        font-family: inherit;
+        font-size: 24px;
+        font-weight: 700;
+        color: #1a1a1a;
+        outline: none;
+        text-align: center;
+        transition: border-color 0.2s ease, box-shadow 0.2s ease;
+        -webkit-appearance: none;
+        appearance: none;
+      }
+
+      .input-qty::placeholder {
+        color: #ccc;
+        font-weight: 500;
+      }
+
+      .input-qty:focus {
+        border-color: #007bff;
+        box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.14);
+      }
+
+      /* ─── Status message ───────────────────────────────────── */
+      .status-msg {
+        display: none;
+        padding: 12px 14px;
+        border-radius: 8px;
+        font-size: 14px;
+        font-weight: 600;
+        line-height: 1.5;
+      }
+
+      .status-msg.visible {
+        display: block;
+      }
+
+      .status-msg--success {
+        background: #d4edda;
+        color: #155724;
+        border: 1px solid #c3e6cb;
+      }
+
+      .status-msg--error {
+        background: #f8d7da;
+        color: #721c24;
+        border: 1px solid #f5c6cb;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+
+      <!-- Page title -->
+      <p class="page-title">T-Box Сотрудник 5</p>
+
+      <!-- 1. Client name -->
+      <div>
+        <p class="block-label">Клиент</p>
+        <p class="client-name">ООО «Ромашка»</p>
+      </div>
+
+      <!-- 2. Services list -->
+      <div>
+        <p class="block-label">Услуги</p>
+        <ul class="services-list">
+          <li>Упаковка товара</li>
+          <li>Маркировка</li>
+          <li>Приёмка</li>
+        </ul>
+      </div>
+
+      <!-- 3. Tempo -->
+      <div>
+        <p class="block-label">Норма</p>
+        <div class="tempo-row">
+          <span class="tempo-row__label">Темп:</span>
+          <span class="tempo-row__value">120 шт/час</span>
+        </div>
+      </div>
+
+      <hr class="divider" />
+
+      <!-- 4. START button -->
+      <button class="btn btn--start" id="btnStart" onclick="startTimer()">
+        <span>&#9654;</span>
+        <span>СТАРТ</span>
+      </button>
+
+      <!-- 5. Timer -->
+      <div class="timer-block">
+        <p class="timer__label">Время выполнения</p>
+        <div class="timer__value" id="timerValue">00:00</div>
+        <p class="timer__status" id="timerStatus">Ожидание старта</p>
+      </div>
+
+      <!-- 6. PAUSE / RESUME button -->
+      <button class="btn btn--pause" id="btnPause" disabled onclick="togglePause()">
+        <span id="pauseIcon">&#9646;&#9646;</span>
+        <span id="pauseLabel">Пауза</span>
+      </button>
+
+      <!-- 7. STOP button -->
+      <button class="btn btn--stop" id="btnStop" disabled onclick="stopTimer()">
+        <span>&#9632;</span>
+        <span>Стоп</span>
+      </button>
+
+      <hr class="divider" />
+
+      <!-- 8. Quantity input -->
+      <div>
+        <label class="qty-label" for="qtyInput">Количество (шт):</label>
+        <input
+          class="input-qty"
+          id="qtyInput"
+          type="number"
+          inputmode="numeric"
+          placeholder="0"
+          min="0"
+        />
+      </div>
+
+      <!-- Status message -->
+      <div class="status-msg" id="statusMsg"></div>
+
+      <!-- 9. SUBMIT button -->
+      <button class="btn btn--submit" id="btnSubmit" onclick="submitTask()">
+        <span>&#10003;</span>
+        <span id="submitLabel">Отправить</span>
+      </button>
+
+    </div><!-- /container -->
+
+    <script>
+      /* ─── State ──────────────────────────────────────────────── */
+      var timerInterval  = null;
+      var elapsedSeconds = 0;
+      var isRunning      = false;
+      var isPaused       = false;
+      var isStopped      = false;
+
+      /* ─── DOM refs ───────────────────────────────────────────── */
+      var timerValueEl  = document.getElementById('timerValue');
+      var timerStatusEl = document.getElementById('timerStatus');
+      var btnStart      = document.getElementById('btnStart');
+      var btnPause      = document.getElementById('btnPause');
+      var btnStop       = document.getElementById('btnStop');
+      var pauseIcon     = document.getElementById('pauseIcon');
+      var pauseLabel    = document.getElementById('pauseLabel');
+      var statusMsg     = document.getElementById('statusMsg');
+      var submitLabel   = document.getElementById('submitLabel');
+
+      /* ─── Helpers ────────────────────────────────────────────── */
+      function pad(n) {
+        return String(n).padStart(2, '0');
+      }
+
+      function formatTime(s) {
+        var hours   = Math.floor(s / 3600);
+        var minutes = Math.floor((s % 3600) / 60);
+        return pad(hours) + ':' + pad(minutes);
+      }
+
+      function tick() {
+        elapsedSeconds++;
+        timerValueEl.textContent = formatTime(elapsedSeconds);
+      }
+
+      function showStatus(type, text) {
+        statusMsg.className = 'status-msg visible status-msg--' + type;
+        statusMsg.textContent = text;
+      }
+
+      function clearStatus() {
+        statusMsg.className = 'status-msg';
+        statusMsg.textContent = '';
+      }
+
+      /* ─── 4. Start ───────────────────────────────────────────── */
+      function startTimer() {
+        if (isRunning) return;
+
+        isRunning = true;
+        isPaused  = false;
+        isStopped = false;
+
+        btnStart.disabled = true;
+        btnPause.disabled = false;
+        btnStop.disabled  = false;
+
+        timerValueEl.className  = 'timer__value is-running';
+        timerStatusEl.textContent = 'Выполняется…';
+
+        clearStatus();
+        timerInterval = setInterval(tick, 1000);
+      }
+
+      /* ─── 6. Pause / Resume ──────────────────────────────────── */
+      function togglePause() {
+        if (!isRunning) return;
+
+        if (!isPaused) {
+          /* pause */
+          clearInterval(timerInterval);
+          isPaused = true;
+
+          timerValueEl.className    = 'timer__value is-paused';
+          timerStatusEl.textContent = 'На паузе';
+
+          pauseIcon.textContent  = '▶';
+          pauseLabel.textContent = 'Продолжить';
+        } else {
+          /* resume */
+          isPaused = false;
+
+          timerValueEl.className    = 'timer__value is-running';
+          timerStatusEl.textContent = 'Выполняется…';
+
+          pauseIcon.innerHTML    = '&#9646;&#9646;';
+          pauseLabel.textContent = 'Пауза';
+
+          timerInterval = setInterval(tick, 1000);
+        }
+      }
+
+      /* ─── 7. Stop ────────────────────────────────────────────── */
+      function stopTimer() {
+        if (!isRunning) return;
+
+        clearInterval(timerInterval);
+        isRunning = false;
+        isStopped = true;
+
+        timerValueEl.className    = 'timer__value is-stopped';
+        timerStatusEl.textContent = 'Остановлен · ' + formatTime(elapsedSeconds);
+
+        btnPause.disabled = true;
+        btnStop.disabled  = true;
+
+        /* reset pause button label in case it was in "resume" state */
+        pauseIcon.innerHTML    = '&#9646;&#9646;';
+        pauseLabel.textContent = 'Пауза';
+      }
+
+      /* ─── 9. Submit ──────────────────────────────────────────── */
+      function submitTask() {
+        var qty = document.getElementById('qtyInput').value.trim();
+
+        if (!isStopped) {
+          showStatus('error', 'Сначала запустите и остановите таймер.');
+          return;
+        }
+
+        if (qty === '' || Number(qty) < 0) {
+          showStatus('error', 'Укажите количество выполненных единиц.');
+          return;
+        }
+
+        clearStatus();
+        var btnSubmit = document.getElementById('btnSubmit');
+        btnSubmit.disabled = true;
+        submitLabel.textContent = 'Отправка…';
+
+        /*
+         * В финальной версии здесь будет:
+         *   google.script.run
+         *     .withSuccessHandler(onSuccess)
+         *     .withFailureHandler(onError)
+         *     .submitTaskResult({
+         *       clientName: 'ООО «Ромашка»',
+         *       services:   ['Упаковка товара', 'Маркировка', 'Приёмка'],
+         *       tempo:      '120 шт/час',
+         *       elapsed:    formatTime(elapsedSeconds),
+         *       quantity:   Number(qty)
+         *     });
+         *
+         * Сейчас — макет, используем alert.
+         */
+        setTimeout(function () {
+          alert(
+            'Данные задания:\n' +
+            'Клиент:    ООО «Ромашка»\n' +
+            'Услуги:    Упаковка товара, Маркировка, Приёмка\n' +
+            'Темп:      120 шт/час\n' +
+            'Время:     ' + formatTime(elapsedSeconds) + '\n' +
+            'Количество: ' + qty + ' шт.'
+          );
+
+          showStatus('success', 'Данные отправлены. Время: ' + formatTime(elapsedSeconds) + ' · Количество: ' + qty + ' шт.');
+          btnSubmit.disabled = false;
+          submitLabel.textContent = 'Отправить';
+        }, 400);
+      }
+    </script>
+  </body>
+</html>

@@ -37,7 +37,8 @@
       "WebFetch",
       "WebSearch",
       "Bash(npx playwright *)",
-      "Bash(start *)"
+      "Bash(start *)",
+      "Bash(curl *)"
     ]
   },
   "enableAllProjectMcpServers": true,
