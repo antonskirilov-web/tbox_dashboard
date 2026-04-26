@@ -9,6 +9,24 @@ const COLS = {
   lenya: 10, // J
   contractor: 14, // N
   paymentMethod: 15, // O
+  category: 18, // R
+};
+
+const FORM_USERS = {
+  anton: {
+    name: 'Антон',
+    column: COLS.anton,
+    emails: [
+      'anton.s.kirilov@gmail.com',
+    ],
+  },
+  lenya: {
+    name: 'Лёня',
+    column: COLS.lenya,
+    emails: [
+      'leogurv@gmail.com',
+    ],
+  },
 };
 
 function doGet() {
@@ -17,33 +35,44 @@ function doGet() {
     .setXFrameOptionsMode(HtmlService.XFrameOptionsMode.ALLOWALL);
 }
 
+function getFormConfig() {
+  const user = getActiveFormUser_();
+
+  return {
+    user: {
+      name: user.name,
+      email: user.email,
+    },
+    categories: getCategoryOptions_(),
+  };
+}
+
 function submitMoneyEntry(payload) {
   validatePayload_(payload);
 
+  const user = getActiveFormUser_();
   const sheet = getTargetSheet_();
   const row = findFirstFreeRow_(sheet, COLS.operation);
 
-  const antonValue = resolvePersonAmount_(payload.incomeAnton, payload.expenseAnton);
-  const lenyaValue = resolvePersonAmount_(payload.incomeLenya, payload.expenseLenya);
+  const amount = resolvePersonAmount_(payload.incomeAmount, payload.expenseAmount);
   const entryDate = parseDate_(payload.date);
+  const category = payload.category.trim();
+
+  if (!getCategoryOptions_().includes(category)) {
+    throw new Error('Выберите категорию из списка.');
+  }
 
   sheet.getRange(row, COLS.operation).setValue(payload.operation.trim());
   sheet.getRange(row, COLS.date).setValue(entryDate).setNumberFormat('dd.mm.yyyy');
   sheet.getRange(row, COLS.contractor).setValue(payload.contractor.trim());
   sheet.getRange(row, COLS.paymentMethod).setValue(payload.paymentMethod.trim());
-
-  if (antonValue !== null) {
-    sheet.getRange(row, COLS.anton).setValue(antonValue);
-  }
-
-  if (lenyaValue !== null) {
-    sheet.getRange(row, COLS.lenya).setValue(lenyaValue);
-  }
+  sheet.getRange(row, COLS.category).setValue(category);
+  sheet.getRange(row, user.column).setValue(amount);
 
   return {
     success: true,
     row: row,
-    message: 'Запись добавлена в лист "Все деньги".',
+    message: `Запись добавлена для пользователя ${user.name}.`,
   };
 }
 
@@ -56,6 +85,71 @@ function getTargetSheet_() {
   }
 
   return sheet;
+}
+
+function getActiveFormUser_() {
+  const email = String(Session.getActiveUser().getEmail() || '').trim().toLowerCase();
+
+  if (!email) {
+    throw new Error('Не удалось определить Google аккаунт. Откройте форму под Google аккаунтом Антона или Лёни.');
+  }
+
+  const user = Object.keys(FORM_USERS)
+    .map((key) => FORM_USERS[key])
+    .find((item) => item.emails.map((value) => value.toLowerCase()).includes(email));
+
+  if (!user) {
+    throw new Error(`Аккаунт ${email} не допущен к заполнению формы.`);
+  }
+
+  return {
+    name: user.name,
+    email: email,
+    column: user.column,
+  };
+}
+
+function getCategoryOptions_() {
+  const sheet = getTargetSheet_();
+  const categoryCell = sheet.getRange(DATA_START_ROW, COLS.category);
+  const validation = categoryCell.getDataValidation();
+
+  if (!validation) {
+    return splitCategoryValues_(categoryCell.getDisplayValue());
+  }
+
+  const criteriaType = validation.getCriteriaType();
+  const criteriaValues = validation.getCriteriaValues();
+
+  if (criteriaType === SpreadsheetApp.DataValidationCriteria.VALUE_IN_LIST) {
+    return normalizeCategoryOptions_(criteriaValues[0] || []);
+  }
+
+  if (criteriaType === SpreadsheetApp.DataValidationCriteria.VALUE_IN_RANGE && criteriaValues[0]) {
+    const values = criteriaValues[0].getDisplayValues().reduce((items, row) => items.concat(row), []);
+    return normalizeCategoryOptions_(values);
+  }
+
+  return splitCategoryValues_(categoryCell.getDisplayValue());
+}
+
+function splitCategoryValues_(value) {
+  return normalizeCategoryOptions_(String(value || '').split(/[,;\n]/));
+}
+
+function normalizeCategoryOptions_(values) {
+  const seen = {};
+
+  return values
+    .map((value) => String(value || '').trim())
+    .filter((value) => {
+      if (!value || seen[value]) {
+        return false;
+      }
+
+      seen[value] = true;
+      return true;
+    });
 }
 
 function findFirstFreeRow_(sheet, columnIndex) {
@@ -157,6 +251,7 @@ function validatePayload_(payload) {
     ['date', 'Выберите дату.'],
     ['contractor', 'Укажите контрагента.'],
     ['paymentMethod', 'Укажите платёжку.'],
+    ['category', 'Выберите категорию.'],
   ];
 
   requiredFields.forEach(([key, message]) => {
@@ -166,10 +261,8 @@ function validatePayload_(payload) {
   });
 
   const hasAnyAmount = [
-    payload.incomeAnton,
-    payload.expenseAnton,
-    payload.incomeLenya,
-    payload.expenseLenya,
+    payload.incomeAmount,
+    payload.expenseAmount,
   ].some((value) => String(value || '').trim());
 
   if (!hasAnyAmount) {
