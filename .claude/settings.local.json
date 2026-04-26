@@ -9,18 +9,37 @@
       "Bash(git commit -m ' *)",
       "Bash(git push *)",
       "Bash(git commit *)",
-      "Bash(git pull *)"
+      "Bash(git pull *)",
+      "Bash(npx @modelcontextprotocol/server-gmail --version)",
+      "Bash(claude mcp *)",
+      "Bash(curl -s -O \"https://raw.githubusercontent.com/ComposioHQ/awesome-claude-skills/master/canvas-design/canvas-fonts/EricaOne-Regular.ttf\" -O \"https://raw.githubusercontent.com/ComposioHQ/awesome-claude-skills/master/canvas-design/canvas-fonts/GeistMono-Bold.ttf\" -O \"https://raw.githubusercontent.com/ComposioHQ/awesome-claude-skills/master/canvas-design/canvas-fonts/GeistMono-Regular.ttf\" -O \"https://raw.githubusercontent.com/ComposioHQ/awesome-claude-skills/master/canvas-design/canvas-fonts/Gloock-Regular.ttf\" -O \"https://raw.githubusercontent.com/ComposioHQ/awesome-claude-skills/master/canvas-design/canvas-fonts/IBMPlexMono-Bold.ttf\" -O \"https://raw.githubusercontent.com/ComposioHQ/awesome-claude-skills/master/canvas-design/canvas-fonts/IBMPlexMono-Regular.ttf\" -O \"https://raw.githubusercontent.com/ComposioHQ/awesome-claude-skills/master/canvas-design/canvas-fonts/IBMPlexSerif-Bold.ttf\" -O \"https://raw.githubusercontent.com/ComposioHQ/awesome-claude-skills/master/canvas-design/canvas-fonts/IBMPlexSerif-BoldItalic.ttf\" -O \"https://raw.githubusercontent.com/ComposioHQ/awesome-claude-skills/master/canvas-design/canvas-fonts/IBMPlexSerif-Italic.ttf\" -O \"https://raw.githubusercontent.com/ComposioHQ/awesome-claude-skills/master/canvas-design/canvas-fonts/IBMPlexSerif-Regular.ttf\")",
+      "Bash(curl -s -O \"https://raw.githubusercontent.com/ComposioHQ/awesome-claude-skills/master/canvas-design/canvas-fonts/InstrumentSans-Bold.ttf\" -O \"https://raw.githubusercontent.com/ComposioHQ/awesome-claude-skills/master/canvas-design/canvas-fonts/InstrumentSans-BoldItalic.ttf\" -O \"https://raw.githubusercontent.com/ComposioHQ/awesome-claude-skills/master/canvas-design/canvas-fonts/InstrumentSans-Italic.ttf\" -O \"https://raw.githubusercontent.com/ComposioHQ/awesome-claude-skills/master/canvas-design/canvas-fonts/InstrumentSans-Regular.ttf\" -O \"https://raw.githubusercontent.com/ComposioHQ/awesome-claude-skills/master/canvas-design/canvas-fonts/InstrumentSerif-Italic.ttf\" -O \"https://raw.githubusercontent.com/ComposioHQ/awesome-claude-skills/master/canvas-design/canvas-fonts/InstrumentSerif-Regular.ttf\" -O \"https://raw.githubusercontent.com/ComposioHQ/awesome-claude-skills/master/canvas-design/canvas-fonts/Italiana-Regular.ttf\" -O \"https://raw.githubusercontent.com/ComposioHQ/awesome-claude-skills/master/canvas-design/canvas-fonts/JetBrainsMono-Bold.ttf\" -O \"https://raw.githubusercontent.com/ComposioHQ/awesome-claude-skills/master/canvas-design/canvas-fonts/JetBrainsMono-Regular.ttf\" -O \"https://raw.githubusercontent.com/ComposioHQ/awesome-claude-skills/master/canvas-design/canvas-fonts/Jura-Light.ttf\")",
+      "Bash(curl -s -O \"https://raw.githubusercontent.com/ComposioHQ/awesome-claude-skills/master/canvas-design/canvas-fonts/Jura-Medium.ttf\" -O \"https://raw.githubusercontent.com/ComposioHQ/awesome-claude-skills/master/canvas-design/canvas-fonts/LibreBaskerville-Regular.ttf\" -O \"https://raw.githubusercontent.com/ComposioHQ/awesome-claude-skills/master/canvas-design/canvas-fonts/Lora-Bold.ttf\" -O \"https://raw.githubusercontent.com/ComposioHQ/awesome-claude-skills/master/canvas-design/canvas-fonts/Lora-BoldItalic.ttf\" -O \"https://raw.githubusercontent.com/ComposioHQ/awesome-claude-skills/master/canvas-design/canvas-fonts/Lora-Italic.ttf\" -O \"https://raw.githubusercontent.com/ComposioHQ/awesome-claude-skills/master/canvas-design/canvas-fonts/Lora-Regular.ttf\" -O \"https://raw.githubusercontent.com/ComposioHQ/awesome-claude-skills/master/canvas-design/canvas-fonts/NationalPark-Bold.ttf\" -O \"https://raw.githubusercontent.com/ComposioHQ/awesome-claude-skills/master/canvas-design/canvas-fonts/NationalPark-Regular.ttf\" -O \"https://raw.githubusercontent.com/ComposioHQ/awesome-claude-skills/master/canvas-design/canvas-fonts/NothingYouCouldDo-Regular.ttf\" -O \"https://raw.githubusercontent.com/ComposioHQ/awesome-claude-skills/master/canvas-design/canvas-fonts/Outfit-Bold.ttf\")",
+      "Bash(curl -s -O \"https://raw.githubusercontent.com/ComposioHQ/awesome-claude-skills/master/canvas-design/canvas-fonts/Outfit-Regular.ttf\" -O \"https://raw.githubusercontent.com/ComposioHQ/awesome-claude-skills/master/canvas-design/canvas-fonts/PixelifySans-Medium.ttf\" -O \"https://raw.githubusercontent.com/ComposioHQ/awesome-claude-skills/master/canvas-design/canvas-fonts/PoiretOne-Regular.ttf\" -O \"https://raw.githubusercontent.com/ComposioHQ/awesome-claude-skills/master/canvas-design/canvas-fonts/RedHatMono-Bold.ttf\" -O \"https://raw.githubusercontent.com/ComposioHQ/awesome-claude-skills/master/canvas-design/canvas-fonts/RedHatMono-Regular.ttf\" -O \"https://raw.githubusercontent.com/ComposioHQ/awesome-claude-skills/master/canvas-design/canvas-fonts/Silkscreen-Regular.ttf\" -O \"https://raw.githubusercontent.com/ComposioHQ/awesome-claude-skills/master/canvas-design/canvas-fonts/SmoochSans-Medium.ttf\" -O \"https://raw.githubusercontent.com/ComposioHQ/awesome-claude-skills/master/canvas-design/canvas-fonts/Tektur-Medium.ttf\" -O \"https://raw.githubusercontent.com/ComposioHQ/awesome-claude-skills/master/canvas-design/canvas-fonts/Tektur-Regular.ttf\" -O \"https://raw.githubusercontent.com/ComposioHQ/awesome-claude-skills/master/canvas-design/canvas-fonts/WorkSans-Bold.ttf\" -O \"https://raw.githubusercontent.com/ComposioHQ/awesome-claude-skills/master/canvas-design/canvas-fonts/WorkSans-BoldItalic.ttf\" -O \"https://raw.githubusercontent.com/ComposioHQ/awesome-claude-skills/master/canvas-design/canvas-fonts/WorkSans-Italic.ttf\" -O \"https://raw.githubusercontent.com/ComposioHQ/awesome-claude-skills/master/canvas-design/canvas-fonts/WorkSans-Regular.ttf\" -O \"https://raw.githubusercontent.com/ComposioHQ/awesome-claude-skills/master/canvas-design/canvas-fonts/YoungSerif-Regular.ttf\")",
+      "Bash(python *)",
+      "Bash(py --version)",
+      "Bash(node -e \"try{require\\('canvas'\\);console.log\\('canvas OK'\\)}catch\\(e\\){console.log\\('no canvas:', e.message\\)}\")",
+      "Bash(node -e \"try{require\\('sharp'\\);console.log\\('sharp OK'\\)}catch\\(e\\){console.log\\('no sharp:', e.message\\)}\")",
+      "Bash(node -e \"try{require\\('jimp'\\);console.log\\('jimp OK'\\)}catch\\(e\\){console.log\\('no jimp:', e.message\\)}\")",
+      "Bash(npm install *)",
+      "Bash(node *)",
+      "Bash(mkdir -p \"C:\\\\_AKI\\\\ClaudeCode\\\\design\")",
+      "Bash(mv \"C:\\\\_AKI\\\\ClaudeCode\\\\tbox_dashboard_v02/poster_responsible_work.png\" \"C:\\\\_AKI\\\\ClaudeCode\\\\tbox_dashboard_v02/poster_responsible_work_philosophy.md\" \"C:\\\\_AKI\\\\ClaudeCode\\\\tbox_dashboard_v02/generate_poster.js\" \"C:\\\\_AKI\\\\ClaudeCode\\\\design/\")",
+      "Read(//c/_AKI/ClaudeCode/design/**)",
+      "Bash(gh api *)",
+      "WebFetch(domain:raw.githubusercontent.com)",
+      "WebFetch(domain:api.github.com)",
+      "Bash(claude --plugin-dir ./connect-apps-plugin)",
+      "Bash(claude plugin *)",
+      "mcp__gmail__search_emails",
+      "Bash(netstat -ano)",
+      "Bash(findstr \":3000\")"
     ]
   },
   "enableAllProjectMcpServers": true,
   "enabledMcpjsonServers": [
     "google-sheets"
   ],
-  "statusLine": {
-    "type": "command",
-    "command": "node 'C:/_AKI/ClaudeCode/tbox_dashboard_v02/.claude/statusline.js'"
-  },
-  "spinnerTipsEnabled": true,
   "hooks": {
     "Stop": [
       {
@@ -34,5 +53,10 @@
         ]
       }
     ]
-  }
+  },
+  "statusLine": {
+    "type": "command",
+    "command": "node 'C:/_AKI/ClaudeCode/tbox_dashboard_v02/.claude/statusline.js'"
+  },
+  "spinnerTipsEnabled": true
 }
