@@ -20,5 +20,19 @@
     "type": "command",
     "command": "node 'C:/_AKI/ClaudeCode/tbox_dashboard_v02/.claude/statusline.js'"
   },
-  "spinnerTipsEnabled": true
+  "spinnerTipsEnabled": true,
+  "hooks": {
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node 'C:/_AKI/ClaudeCode/tbox_dashboard_v02/.claude/git-status-hook.js'",
+            "timeout": 15,
+            "statusMessage": "Проверяю git-статус..."
+          }
+        ]
+      }
+    ]
+  }
 }
