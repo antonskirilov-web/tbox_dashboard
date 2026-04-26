@@ -33,7 +33,11 @@
       "Bash(claude plugin *)",
       "mcp__gmail__search_emails",
       "Bash(netstat -ano)",
-      "Bash(findstr \":3000\")"
+      "Bash(findstr \":3000\")",
+      "WebFetch",
+      "WebSearch",
+      "Bash(npx playwright *)",
+      "Bash(start *)"
     ]
   },
   "enableAllProjectMcpServers": true,

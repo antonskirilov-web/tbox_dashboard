@@ -186,6 +186,37 @@ echo '{}' | node .claude/statusline.js
 - `statusLine.command` указывает на `.claude/statusline.js` с **абсолютным путём** — при смене машины обновить путь
 - Разрешения (allow): `mcp__google-sheets__sheets_get_metadata`, `Bash(code *)`, `Bash(node .claude/statusline.js)`, `Bash(git add *)`, `Bash(git commit *)`, `Bash(git push *)`, `Bash(git pull *)`
 
+## Cashflow Form (`cashflowform.gs`)
+
+Форма учёта денег. Конфиг — `CASHFLOW_FORM_CONFIG` в `Config.gs`.
+
+| Параметр | Значение |
+|----------|----------|
+| Spreadsheet ID | `1Y3qAFBw8o8AQixxINUrtFXBFM_K7qNiN3KYzWxPYVro` |
+| Лист | `Все деньги` |
+| Данные с строки | 3 |
+
+**Колонки:**
+
+| Поле | Колонка | Индекс |
+|------|---------|--------|
+| operation | E | 5 |
+| date | G | 7 |
+| anton (сумма) | I | 9 |
+| lenya (сумма) | J | 10 |
+| contractor | N | 14 |
+| paymentMethod | O | 15 |
+| category | R | 18 |
+
+**Пользователи:**
+
+| Ключ | Имя | Email |
+|------|-----|-------|
+| anton | Антон | anton.s.kirilov@gmail.com |
+| lenya | Лёня | leogurv@gmail.com |
+
+Доход записывается как отрицательное число, расход — как положительное.
+
 ## Current State (апрель 2026)
 
 GAS-файлы (`Code.gs`, `Index.html`, `appsscript.json`, `.clasp.json`) ещё не созданы — проект на стадии планирования/настройки окружения. Фаза 1 (авторизация + задания) в работе.
