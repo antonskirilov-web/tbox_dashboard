@@ -1,0 +1,731 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover"
+    />
+    <title>T-Box · Сотрудник 4</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800;900&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --bg:           #0f1117;
+        --bg-deep:      #080a0f;
+        --surface:      rgba(255, 255, 255, 0.055);
+        --surface-hi:   rgba(255, 255, 255, 0.09);
+        --border:       rgba(255, 255, 255, 0.10);
+        --border-hi:    rgba(255, 255, 255, 0.18);
+
+        --accent:       #4f8dff;
+        --accent-alt:   #7c5cfc;
+        --accent-glow:  rgba(79, 141, 255, 0.30);
+        --accent-soft:  rgba(79, 141, 255, 0.14);
+
+        --text:         #f0f4ff;
+        --text-sub:     rgba(240, 244, 255, 0.55);
+        --text-muted:   rgba(240, 244, 255, 0.35);
+
+        --warning:      #f59e0b;
+        --warning-soft: rgba(245, 158, 11, 0.14);
+        --danger:       #f87171;
+        --danger-soft:  rgba(248, 113, 113, 0.12);
+        --success:      #34d399;
+        --success-soft: rgba(52, 211, 153, 0.12);
+
+        --radius-xl:    24px;
+        --radius-lg:    18px;
+        --radius-md:    14px;
+
+        --blur:         blur(18px) saturate(160%);
+        --blur-sm:      blur(10px) saturate(140%);
+      }
+
+      * {
+        box-sizing: border-box;
+        min-width: 0;
+      }
+
+      html, body {
+        margin: 0;
+        width: 100%;
+        font-family: 'Manrope', sans-serif;
+        -webkit-font-smoothing: antialiased;
+        color: var(--text);
+      }
+
+      html {
+        position: fixed;
+        inset: 0;
+        height: 100%;
+        overflow: hidden;
+        background: var(--bg-deep);
+      }
+
+      body {
+        position: relative;
+        width: 100dvw;
+        max-width: 100dvw;
+        height: 100dvh;
+        overflow-y: auto;
+        overflow-x: hidden;
+        -webkit-overflow-scrolling: touch;
+        touch-action: pan-y;
+        overscroll-behavior-x: none;
+        /* layered radial gradients for ambient glow */
+        background:
+          radial-gradient(ellipse 70% 50% at 20% 10%,  rgba(79, 141, 255, 0.13) 0%, transparent 60%),
+          radial-gradient(ellipse 55% 40% at 85% 80%,  rgba(124, 92, 252, 0.12) 0%, transparent 55%),
+          radial-gradient(ellipse 80% 60% at 50% 50%,  rgba(15, 18, 28, 0.60) 0%, transparent 100%),
+          var(--bg);
+        padding:
+          max(14px, env(safe-area-inset-top))
+          max(12px, env(safe-area-inset-right))
+          max(24px, env(safe-area-inset-bottom))
+          max(12px, env(safe-area-inset-left));
+      }
+
+      /* ─── Layout shell ─────────────────────────────────────── */
+      .app-shell {
+        width: min(calc(100dvw - 24px), 390px);
+        max-width: calc(100vw - 24px);
+        margin: 0 auto;
+        overflow-x: clip;
+      }
+
+      /* ─── Header strip ─────────────────────────────────────── */
+      .header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 18px;
+      }
+
+      .header__brand {
+        font-size: 13px;
+        font-weight: 800;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        background: linear-gradient(90deg, var(--accent), var(--accent-alt));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+
+      .header__date {
+        font-size: 12px;
+        font-weight: 600;
+        color: var(--text-muted);
+      }
+
+      /* ─── Glass card ───────────────────────────────────────── */
+      .glass {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: var(--radius-lg);
+        backdrop-filter: var(--blur);
+        -webkit-backdrop-filter: var(--blur);
+        padding: 18px 16px;
+      }
+
+      .glass--bright {
+        background: var(--surface-hi);
+        border-color: var(--border-hi);
+      }
+
+      /* ─── Stack layout ─────────────────────────────────────── */
+      .stack {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+      }
+
+      /* ─── Info panels ──────────────────────────────────────── */
+      .info-label {
+        margin: 0 0 5px;
+        font-size: 10px;
+        font-weight: 800;
+        letter-spacing: 0.10em;
+        text-transform: uppercase;
+        color: var(--text-muted);
+      }
+
+      .info-value {
+        margin: 0;
+        line-height: 1.15;
+        font-weight: 800;
+        color: var(--text);
+      }
+
+      .info-value--client {
+        font-size: 28px;
+      }
+
+      .info-value--service {
+        font-size: 22px;
+        font-weight: 700;
+        color: rgba(240, 244, 255, 0.88);
+      }
+
+      .info-value--tempo {
+        font-size: 26px;
+        background: linear-gradient(120deg, var(--accent), var(--accent-alt));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+
+      /* ─── Employee pill ────────────────────────────────────── */
+      .employee-pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        background: rgba(79, 141, 255, 0.10);
+        border: 1px solid rgba(79, 141, 255, 0.22);
+        border-radius: 999px;
+        padding: 7px 14px 7px 9px;
+        margin-bottom: 16px;
+      }
+
+      .employee-pill__dot {
+        width: 28px;
+        height: 28px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, var(--accent), var(--accent-alt));
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 13px;
+        font-weight: 800;
+        color: #fff;
+        flex-shrink: 0;
+      }
+
+      .employee-pill__name {
+        font-size: 13px;
+        font-weight: 700;
+        color: var(--text);
+      }
+
+      /* ─── Timer panel ──────────────────────────────────────── */
+      .timer-card {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: var(--radius-xl);
+        backdrop-filter: var(--blur);
+        -webkit-backdrop-filter: var(--blur);
+        padding: 26px 16px 22px;
+        text-align: center;
+        position: relative;
+        overflow: hidden;
+        transition: border-color 0.3s ease, box-shadow 0.3s ease;
+      }
+
+      /* ambient glow ring behind timer */
+      .timer-card::before {
+        content: '';
+        position: absolute;
+        inset: -1px;
+        border-radius: inherit;
+        background: linear-gradient(135deg, var(--accent), var(--accent-alt));
+        opacity: 0;
+        z-index: 0;
+        transition: opacity 0.3s ease;
+        pointer-events: none;
+        mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+        mask-composite: exclude;
+        -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+        -webkit-mask-composite: xor;
+        padding: 1px;
+      }
+
+      .timer-card.is-running {
+        border-color: rgba(79, 141, 255, 0.45);
+        box-shadow: 0 0 0 1px rgba(79, 141, 255, 0.18), 0 0 40px rgba(79, 141, 255, 0.18);
+      }
+
+      .timer-card.is-paused {
+        border-color: rgba(245, 158, 11, 0.45);
+        box-shadow: 0 0 0 1px rgba(245, 158, 11, 0.18), 0 0 40px rgba(245, 158, 11, 0.14);
+      }
+
+      .timer-card.is-stopped {
+        border-color: rgba(124, 92, 252, 0.45);
+        box-shadow: 0 0 0 1px rgba(124, 92, 252, 0.18), 0 0 40px rgba(124, 92, 252, 0.14);
+      }
+
+      .timer__label {
+        position: relative;
+        z-index: 1;
+        margin: 0 0 10px;
+        font-size: 10px;
+        font-weight: 800;
+        letter-spacing: 0.10em;
+        text-transform: uppercase;
+        color: var(--text-muted);
+      }
+
+      .timer__value {
+        position: relative;
+        z-index: 1;
+        font-size: 72px;
+        font-weight: 900;
+        letter-spacing: -0.03em;
+        line-height: 1;
+        font-variant-numeric: tabular-nums;
+        color: rgba(240, 244, 255, 0.25);
+        transition: color 0.3s ease;
+      }
+
+      .timer__value.is-running {
+        color: var(--accent);
+        text-shadow: 0 0 40px rgba(79, 141, 255, 0.50);
+      }
+
+      .timer__value.is-paused {
+        color: var(--warning);
+        text-shadow: 0 0 40px rgba(245, 158, 11, 0.40);
+      }
+
+      .timer__value.is-stopped {
+        color: var(--accent-alt);
+        text-shadow: 0 0 40px rgba(124, 92, 252, 0.40);
+      }
+
+      .timer__status {
+        position: relative;
+        z-index: 1;
+        margin: 10px 0 0;
+        font-size: 12px;
+        font-weight: 700;
+        color: var(--text-muted);
+        min-height: 18px;
+        letter-spacing: 0.02em;
+      }
+
+      /* ─── Buttons ──────────────────────────────────────────── */
+      .btn {
+        width: 100%;
+        border: 0;
+        border-radius: var(--radius-md);
+        padding: 17px 18px;
+        font: inherit;
+        font-size: 16px;
+        font-weight: 800;
+        letter-spacing: 0.01em;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        transition: transform 0.15s ease, box-shadow 0.15s ease, opacity 0.15s ease, background 0.2s ease;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .btn::after {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: rgba(255, 255, 255, 0.08);
+        opacity: 0;
+        transition: opacity 0.15s ease;
+      }
+
+      .btn:hover:not([disabled])::after {
+        opacity: 1;
+      }
+
+      .btn:active:not([disabled]) {
+        transform: scale(0.975) translateY(1px);
+      }
+
+      .btn[disabled] {
+        opacity: 0.35;
+        cursor: not-allowed;
+      }
+
+      .btn--start {
+        background: linear-gradient(135deg, var(--accent) 0%, var(--accent-alt) 100%);
+        color: #fff;
+        font-size: 20px;
+        padding: 22px 18px;
+        border-radius: var(--radius-xl);
+        box-shadow: 0 12px 40px var(--accent-glow), 0 0 0 1px rgba(79, 141, 255, 0.30) inset;
+      }
+
+      .btn--start:hover:not([disabled]) {
+        box-shadow: 0 16px 48px rgba(79, 141, 255, 0.42), 0 0 0 1px rgba(79, 141, 255, 0.40) inset;
+      }
+
+      .btn--pause {
+        background: var(--warning-soft);
+        color: var(--warning);
+        border: 1px solid rgba(245, 158, 11, 0.28);
+        backdrop-filter: var(--blur-sm);
+        -webkit-backdrop-filter: var(--blur-sm);
+      }
+
+      .btn--resume {
+        background: var(--accent-soft);
+        color: var(--accent);
+        border: 1px solid rgba(79, 141, 255, 0.28);
+        backdrop-filter: var(--blur-sm);
+        -webkit-backdrop-filter: var(--blur-sm);
+      }
+
+      .btn--stop {
+        background: var(--danger-soft);
+        color: var(--danger);
+        border: 1px solid rgba(248, 113, 113, 0.22);
+        backdrop-filter: var(--blur-sm);
+        -webkit-backdrop-filter: var(--blur-sm);
+      }
+
+      .btn--submit {
+        background: linear-gradient(135deg, var(--accent) 0%, var(--accent-alt) 100%);
+        color: #fff;
+        box-shadow: 0 10px 32px var(--accent-glow);
+        border-radius: var(--radius-xl);
+        font-size: 17px;
+        padding: 20px 18px;
+      }
+
+      /* ─── Qty input ────────────────────────────────────────── */
+      .qty-label {
+        display: block;
+        margin: 0 0 10px;
+        font-size: 12px;
+        font-weight: 700;
+        color: var(--text-sub);
+        letter-spacing: 0.02em;
+      }
+
+      .input {
+        appearance: none;
+        -webkit-appearance: none;
+        width: 100%;
+        border: 1px solid var(--border);
+        border-radius: var(--radius-md);
+        background: rgba(255, 255, 255, 0.04);
+        padding: 15px 12px;
+        font: inherit;
+        font-size: 22px;
+        font-weight: 700;
+        color: var(--text);
+        outline: none;
+        text-align: center;
+        transition: border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+        color-scheme: dark;
+      }
+
+      .input::placeholder {
+        color: var(--text-muted);
+        font-weight: 500;
+        font-size: 18px;
+      }
+
+      .input:focus {
+        border-color: rgba(79, 141, 255, 0.50);
+        background: rgba(79, 141, 255, 0.06);
+        box-shadow: 0 0 0 3px rgba(79, 141, 255, 0.14);
+      }
+
+      /* ─── Status message ───────────────────────────────────── */
+      .status {
+        display: none;
+        padding: 14px 15px;
+        border-radius: var(--radius-md);
+        font-size: 13px;
+        line-height: 1.5;
+        font-weight: 600;
+        backdrop-filter: var(--blur-sm);
+        -webkit-backdrop-filter: var(--blur-sm);
+      }
+
+      .status.is-visible {
+        display: block;
+      }
+
+      .status--success {
+        background: var(--success-soft);
+        color: var(--success);
+        border: 1px solid rgba(52, 211, 153, 0.22);
+      }
+
+      .status--error {
+        background: var(--danger-soft);
+        color: var(--danger);
+        border: 1px solid rgba(248, 113, 113, 0.20);
+      }
+
+      /* ─── Sticky submit ────────────────────────────────────── */
+      .submit-wrap {
+        position: sticky;
+        bottom: max(12px, env(safe-area-inset-bottom));
+        padding-top: 4px;
+      }
+
+      /* ─── Divider ──────────────────────────────────────────── */
+      .divider {
+        height: 1px;
+        background: var(--border);
+        border: none;
+        margin: 2px 0;
+      }
+
+      /* ─── Responsive ───────────────────────────────────────── */
+      @media (min-width: 520px) {
+        .app-shell {
+          width: min(calc(100dvw - 32px), 420px);
+          max-width: calc(100vw - 32px);
+        }
+      }
+
+      @media (max-width: 360px) {
+        .timer__value {
+          font-size: 60px;
+        }
+        .info-value--client {
+          font-size: 24px;
+        }
+        .btn--start {
+          font-size: 18px;
+          padding: 19px 16px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="app-shell">
+
+      <!-- Header -->
+      <div class="header">
+        <span class="header__brand">T-Box</span>
+        <span class="header__date">ВС, 26 апр 2026</span>
+      </div>
+
+      <!-- Employee pill -->
+      <div class="employee-pill">
+        <div class="employee-pill__dot">ИИ</div>
+        <span class="employee-pill__name">Иванов Иван</span>
+      </div>
+
+      <!-- Main stack -->
+      <div class="stack">
+
+        <!-- Client -->
+        <div class="glass">
+          <p class="info-label">Клиент</p>
+          <p class="info-value info-value--client">ООО «Ромашка»</p>
+        </div>
+
+        <!-- Service -->
+        <div class="glass">
+          <p class="info-label">Услуга</p>
+          <p class="info-value info-value--service">Приёмка и маркировка товара</p>
+        </div>
+
+        <!-- Tempo -->
+        <div class="glass glass--bright">
+          <p class="info-label">Темп (норма в час)</p>
+          <p class="info-value info-value--tempo">120 шт/ч</p>
+        </div>
+
+        <hr class="divider" />
+
+        <!-- Start button -->
+        <button class="btn btn--start" id="btnStart" onclick="startTimer()">
+          <span>▶</span>
+          <span>Старт</span>
+        </button>
+
+        <!-- Timer -->
+        <div class="timer-card" id="timerPanel">
+          <p class="timer__label">Время выполнения</p>
+          <div class="timer__value" id="timerValue">00:00</div>
+          <p class="timer__status" id="timerStatus">Ожидание старта</p>
+        </div>
+
+        <!-- Pause / Continue -->
+        <button class="btn btn--pause" id="btnPause" disabled onclick="togglePause()">
+          <span id="pauseIcon">⏸</span>
+          <span id="pauseLabel">Пауза</span>
+        </button>
+
+        <!-- Stop -->
+        <button class="btn btn--stop" id="btnStop" disabled onclick="stopTimer()">
+          <span>⏹</span>
+          <span>Стоп</span>
+        </button>
+
+        <hr class="divider" />
+
+        <!-- Quantity input -->
+        <div class="glass">
+          <label class="qty-label" for="qtyInput">Количество выполненных единиц, шт</label>
+          <input
+            class="input"
+            id="qtyInput"
+            type="number"
+            inputmode="numeric"
+            placeholder="0"
+            min="0"
+          />
+        </div>
+
+        <!-- Status message -->
+        <div class="status" id="statusMsg"></div>
+
+        <!-- Submit (sticky) -->
+        <div class="submit-wrap">
+          <button class="btn btn--submit" id="btnSubmit" onclick="submitTask()">
+            <span>✓</span>
+            <span>Отправить</span>
+          </button>
+        </div>
+
+      </div><!-- /stack -->
+    </div><!-- /app-shell -->
+
+    <script>
+      let timerInterval  = null;
+      let elapsedSeconds = 0;
+      let isRunning      = false;
+      let isPaused       = false;
+      let isStopped      = false;
+
+      const timerValueEl  = document.getElementById('timerValue');
+      const timerPanelEl  = document.getElementById('timerPanel');
+      const timerStatusEl = document.getElementById('timerStatus');
+      const btnStart      = document.getElementById('btnStart');
+      const btnPause      = document.getElementById('btnPause');
+      const btnStop       = document.getElementById('btnStop');
+      const pauseIcon     = document.getElementById('pauseIcon');
+      const pauseLabel    = document.getElementById('pauseLabel');
+      const statusMsg     = document.getElementById('statusMsg');
+
+      function pad(n) {
+        return String(n).padStart(2, '0');
+      }
+
+      function formatTime(s) {
+        return pad(Math.floor(s / 3600)) + ':' + pad(Math.floor((s % 3600) / 60));
+      }
+
+      function tick() {
+        elapsedSeconds++;
+        timerValueEl.textContent = formatTime(elapsedSeconds);
+      }
+
+      function startTimer() {
+        if (isRunning) return;
+        isRunning = true;
+        isPaused  = false;
+        isStopped = false;
+
+        btnStart.disabled = true;
+        btnPause.disabled = false;
+        btnStop.disabled  = false;
+
+        timerPanelEl.className  = 'timer-card is-running';
+        timerValueEl.className  = 'timer__value is-running';
+        timerStatusEl.textContent = 'Выполняется…';
+
+        timerInterval = setInterval(tick, 1000);
+      }
+
+      function togglePause() {
+        if (!isRunning) return;
+
+        if (!isPaused) {
+          /* → pause */
+          clearInterval(timerInterval);
+          isPaused = true;
+
+          timerPanelEl.className = 'timer-card is-paused';
+          timerValueEl.className = 'timer__value is-paused';
+          timerStatusEl.textContent = 'На паузе';
+
+          pauseIcon.textContent = '▶';
+          pauseLabel.textContent = 'Продолжить';
+          btnPause.classList.remove('btn--pause');
+          btnPause.classList.add('btn--resume');
+        } else {
+          /* → resume */
+          isPaused = false;
+
+          timerPanelEl.className = 'timer-card is-running';
+          timerValueEl.className = 'timer__value is-running';
+          timerStatusEl.textContent = 'Выполняется…';
+
+          pauseIcon.textContent = '⏸';
+          pauseLabel.textContent = 'Пауза';
+          btnPause.classList.remove('btn--resume');
+          btnPause.classList.add('btn--pause');
+
+          timerInterval = setInterval(tick, 1000);
+        }
+      }
+
+      function stopTimer() {
+        if (!isRunning) return;
+        clearInterval(timerInterval);
+        isRunning = false;
+        isStopped = true;
+
+        timerPanelEl.className = 'timer-card is-stopped';
+        timerValueEl.className = 'timer__value is-stopped';
+        timerStatusEl.textContent = 'Остановлен · ' + formatTime(elapsedSeconds);
+
+        btnPause.disabled = true;
+        btnStop.disabled  = true;
+
+        /* reset pause button appearance */
+        pauseIcon.textContent = '⏸';
+        pauseLabel.textContent = 'Пауза';
+        btnPause.classList.remove('btn--resume');
+        btnPause.classList.add('btn--pause');
+      }
+
+      function showStatus(type, text) {
+        statusMsg.className = 'status is-visible status--' + type;
+        statusMsg.textContent = text;
+      }
+
+      function submitTask() {
+        const qty = document.getElementById('qtyInput').value.trim();
+
+        if (!isStopped) {
+          showStatus('error', 'Сначала запустите и остановите таймер.');
+          return;
+        }
+
+        if (qty === '' || Number(qty) < 0) {
+          showStatus('error', 'Укажите количество выполненных единиц.');
+          return;
+        }
+
+        const btnSubmit = document.getElementById('btnSubmit');
+        btnSubmit.disabled = true;
+        btnSubmit.querySelector('span:last-child').textContent = 'Отправка…';
+        statusMsg.className = 'status';
+
+        setTimeout(function () {
+          showStatus(
+            'success',
+            'Данные отправлены. Время: ' + formatTime(elapsedSeconds) +
+            ' · Количество: ' + qty + ' шт.'
+          );
+          btnSubmit.disabled = false;
+          btnSubmit.querySelector('span:last-child').textContent = 'Отправить';
+        }, 800);
+      }
+    </script>
+  </body>
+</html>

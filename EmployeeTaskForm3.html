@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover"
+    />
+    <title>T-Box · Сотрудник 3</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --accent: #52c30b;
+        --accent-deep: #399500;
+        --accent-soft: rgba(82, 195, 11, 0.12);
+        --text: #14210d;
+        --muted: #65805d;
+        --line: rgba(20, 33, 13, 0.08);
+        --surface: rgba(255, 255, 255, 0.92);
+        --surface-strong: #ffffff;
+        --danger: #cf2d2d;
+        --warning: #d97706;
+        --shadow: 0 18px 42px rgba(32, 65, 15, 0.14);
+        --radius-xl: 28px;
+        --radius-lg: 20px;
+        --radius-md: 16px;
+      }
+
+      * {
+        box-sizing: border-box;
+        min-width: 0;
+      }
+
+      html,
+      body {
+        margin: 0;
+        min-height: 100%;
+        width: 100%;
+        min-width: 100%;
+        max-width: 100%;
+        overflow-x: hidden;
+        overscroll-behavior-x: none;
+        touch-action: pan-y;
+        font-family: 'Manrope', sans-serif;
+        background:
+          radial-gradient(circle at top left, rgba(82, 195, 11, 0.18), transparent 34%),
+          linear-gradient(180deg, #f7ffef 0%, #eff8e9 50%, #f9fbf7 100%);
+        color: var(--text);
+      }
+
+      html {
+        position: fixed;
+        inset: 0;
+        height: 100%;
+        overflow: hidden;
+      }
+
+      body {
+        position: relative;
+        left: 0;
+        right: 0;
+        width: 100dvw;
+        max-width: 100dvw;
+        height: 100dvh;
+        margin-left: 0;
+        margin-right: 0;
+        overflow-y: auto;
+        overflow-x: hidden;
+        -webkit-overflow-scrolling: touch;
+        touch-action: pan-y;
+        padding: max(10px, env(safe-area-inset-top)) 10px max(22px, env(safe-area-inset-bottom));
+      }
+
+      .app-shell {
+        width: min(calc(100dvw - 20px), 390px);
+        max-width: calc(100vw - 20px);
+        margin: 0 auto;
+        overflow-x: clip;
+        overscroll-behavior-x: none;
+        touch-action: pan-y;
+      }
+
+      .hero {
+        position: relative;
+        overflow: hidden;
+        background:
+          linear-gradient(135deg, rgba(82, 195, 11, 0.18), rgba(82, 195, 11, 0.05)),
+          rgba(255, 255, 255, 0.68);
+        border: 1px solid rgba(82, 195, 11, 0.14);
+        border-radius: 18px;
+        padding: 16px 14px;
+        box-shadow: var(--shadow);
+        backdrop-filter: blur(12px);
+      }
+
+      .hero::after {
+        content: '';
+        position: absolute;
+        right: -22px;
+        top: -22px;
+        width: 92px;
+        height: 92px;
+        background: radial-gradient(circle, rgba(82, 195, 11, 0.25), transparent 70%);
+      }
+
+      .hero__eyebrow {
+        position: relative;
+        z-index: 1;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 8px 12px;
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.72);
+        color: var(--accent-deep);
+        font-size: 11px;
+        font-weight: 800;
+        letter-spacing: 0.02em;
+        text-transform: uppercase;
+      }
+
+      .hero__title {
+        position: relative;
+        z-index: 1;
+        margin: 14px 0 4px;
+        font-size: 23px;
+        line-height: 1.12;
+        font-weight: 800;
+      }
+
+      .hero__sub {
+        position: relative;
+        z-index: 1;
+        margin: 0;
+        color: var(--muted);
+        font-size: 13px;
+        font-weight: 600;
+      }
+
+      .form {
+        display: grid;
+        gap: 12px;
+        margin-top: 12px;
+        width: 100%;
+        overflow-x: clip;
+      }
+
+      .panel {
+        width: 100%;
+        max-width: 100%;
+        overflow-x: clip;
+        background: var(--surface);
+        border: 1px solid var(--line);
+        border-radius: 16px;
+        padding: 16px;
+        box-shadow: 0 12px 28px rgba(45, 79, 23, 0.08);
+      }
+
+      .panel__label {
+        margin: 0 0 6px;
+        font-size: 11px;
+        font-weight: 800;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+        color: var(--muted);
+      }
+
+      .panel__value {
+        margin: 0;
+        font-weight: 800;
+        line-height: 1.15;
+        color: var(--text);
+      }
+
+      .panel__value--client {
+        font-size: 28px;
+      }
+
+      .panel__value--service {
+        font-size: 22px;
+      }
+
+      .panel__value--tempo {
+        font-size: 26px;
+        color: var(--accent-deep);
+      }
+
+      .panel__value--accent {
+        color: var(--accent-deep);
+      }
+
+      .timer-panel {
+        background: rgba(255, 255, 255, 0.96);
+        border: 2px solid var(--line);
+        border-radius: 20px;
+        padding: 20px 16px;
+        text-align: center;
+        box-shadow: 0 12px 28px rgba(45, 79, 23, 0.08);
+      }
+
+      .timer-panel.is-running {
+        border-color: rgba(82, 195, 11, 0.4);
+        box-shadow: 0 0 0 4px rgba(82, 195, 11, 0.08), 0 12px 28px rgba(45, 79, 23, 0.08);
+      }
+
+      .timer-panel.is-paused {
+        border-color: rgba(217, 119, 6, 0.4);
+        box-shadow: 0 0 0 4px rgba(217, 119, 6, 0.08), 0 12px 28px rgba(45, 79, 23, 0.08);
+      }
+
+      .timer__label {
+        margin: 0 0 8px;
+        font-size: 11px;
+        font-weight: 800;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+        color: var(--muted);
+      }
+
+      .timer__value {
+        font-size: 56px;
+        font-weight: 800;
+        letter-spacing: -0.02em;
+        line-height: 1;
+        color: var(--text);
+        font-variant-numeric: tabular-nums;
+      }
+
+      .timer__value.is-running {
+        color: var(--accent-deep);
+      }
+
+      .timer__value.is-paused {
+        color: var(--warning);
+      }
+
+      .timer__status {
+        margin: 8px 0 0;
+        font-size: 12px;
+        font-weight: 700;
+        color: var(--muted);
+        min-height: 18px;
+      }
+
+      .btn {
+        width: 100%;
+        border: 0;
+        border-radius: 16px;
+        padding: 16px 18px;
+        font: inherit;
+        font-size: 17px;
+        font-weight: 800;
+        letter-spacing: 0.01em;
+        cursor: pointer;
+        transition: transform 0.15s ease, box-shadow 0.15s ease, opacity 0.15s ease;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+      }
+
+      .btn:active {
+        transform: translateY(1px) scale(0.995);
+      }
+
+      .btn[disabled] {
+        opacity: 0.45;
+        cursor: not-allowed;
+        transform: none;
+      }
+
+      .btn--start {
+        background: linear-gradient(135deg, var(--accent), #69d616);
+        color: #fff;
+        box-shadow: 0 18px 36px rgba(82, 195, 11, 0.32);
+        font-size: 19px;
+        padding: 20px 18px;
+        border-radius: 20px;
+      }
+
+      .btn--pause {
+        background: rgba(217, 119, 6, 0.1);
+        color: var(--warning);
+        border: 2px solid rgba(217, 119, 6, 0.24);
+        box-shadow: none;
+      }
+
+      .btn--resume {
+        background: rgba(82, 195, 11, 0.1);
+        color: var(--accent-deep);
+        border: 2px solid rgba(82, 195, 11, 0.28);
+        box-shadow: none;
+      }
+
+      .btn--stop {
+        background: rgba(207, 45, 45, 0.07);
+        color: var(--danger);
+        border: 2px solid rgba(207, 45, 45, 0.18);
+        box-shadow: none;
+      }
+
+      .btn--submit {
+        background: linear-gradient(135deg, var(--accent), #69d616);
+        color: #fff;
+        box-shadow: 0 18px 36px rgba(82, 195, 11, 0.28);
+      }
+
+      .qty-panel {
+        background: var(--surface);
+        border: 1px solid var(--line);
+        border-radius: 16px;
+        padding: 16px;
+        box-shadow: 0 12px 28px rgba(45, 79, 23, 0.08);
+      }
+
+      .qty-panel__label {
+        display: block;
+        margin: 0 0 10px;
+        font-size: 13px;
+        font-weight: 700;
+        color: #28411a;
+      }
+
+      .input {
+        appearance: none;
+        -webkit-appearance: none;
+        width: 100%;
+        max-width: 100%;
+        min-width: 0;
+        border: 1px solid rgba(20, 33, 13, 0.12);
+        border-radius: 14px;
+        background: var(--surface-strong);
+        padding: 14px 12px;
+        font: inherit;
+        font-size: 20px;
+        font-weight: 700;
+        color: var(--text);
+        outline: none;
+        text-align: center;
+        transition: border-color 0.2s ease, box-shadow 0.2s ease;
+      }
+
+      .input::placeholder {
+        color: #98aa92;
+        font-weight: 500;
+        font-size: 16px;
+      }
+
+      .input:focus {
+        border-color: var(--accent);
+        box-shadow: 0 0 0 4px var(--accent-soft);
+      }
+
+      .status {
+        display: none;
+        padding: 14px 15px;
+        border-radius: var(--radius-md);
+        font-size: 14px;
+        line-height: 1.45;
+        font-weight: 600;
+      }
+
+      .status.is-visible {
+        display: block;
+      }
+
+      .status--success {
+        background: rgba(82, 195, 11, 0.12);
+        color: #26520a;
+        border: 1px solid rgba(82, 195, 11, 0.24);
+      }
+
+      .status--error {
+        background: rgba(207, 45, 45, 0.08);
+        color: var(--danger);
+        border: 1px solid rgba(207, 45, 45, 0.16);
+      }
+
+      .submit-wrap {
+        position: sticky;
+        bottom: max(10px, env(safe-area-inset-bottom));
+        padding-top: 4px;
+      }
+
+      @media (min-width: 520px) {
+        .app-shell {
+          width: min(calc(100dvw - 28px), 430px);
+          max-width: calc(100vw - 28px);
+        }
+      }
+
+      @media (min-width: 720px) {
+        body {
+          padding: 28px 18px 36px;
+        }
+
+        .hero__title {
+          font-size: 34px;
+        }
+      }
+
+      @media (max-width: 380px) {
+        body {
+          padding-left: 10px;
+          padding-right: 10px;
+        }
+
+        .hero__title {
+          font-size: 20px;
+        }
+
+        .timer__value {
+          font-size: 48px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="app-shell">
+
+      <div class="hero">
+        <div class="hero__eyebrow">
+          <span>📦</span>
+          <span>T-Box · Сотрудник 3</span>
+        </div>
+        <h1 class="hero__title">Задание на сегодня</h1>
+        <p class="hero__sub">Иванов Иван · ВС, 26 апр 2026</p>
+      </div>
+
+      <div class="form">
+
+        <div class="panel">
+          <p class="panel__label">Клиент</p>
+          <p class="panel__value panel__value--client">ООО «Ромашка»</p>
+        </div>
+
+        <div class="panel">
+          <p class="panel__label">Услуга</p>
+          <p class="panel__value panel__value--service">Приёмка и маркировка товара</p>
+        </div>
+
+        <div class="panel">
+          <p class="panel__label">Темп (норма в час)</p>
+          <p class="panel__value panel__value--tempo">120 шт/ч</p>
+        </div>
+
+        <button class="btn btn--start" id="btnStart" onclick="startTimer()">
+          <span>▶</span>
+          <span>Старт</span>
+        </button>
+
+        <div class="timer-panel" id="timerPanel">
+          <p class="timer__label">Время выполнения</p>
+          <div class="timer__value" id="timerValue">00:00</div>
+          <p class="timer__status" id="timerStatus">Ожидание старта</p>
+        </div>
+
+        <button class="btn btn--pause" id="btnPause" disabled onclick="togglePause()">
+          <span id="pauseIcon">⏸</span>
+          <span id="pauseLabel">Пауза</span>
+        </button>
+
+        <button class="btn btn--stop" id="btnStop" disabled onclick="stopTimer()">
+          <span>⏹</span>
+          <span>Стоп</span>
+        </button>
+
+        <div class="qty-panel">
+          <label class="qty-panel__label" for="qtyInput">Количество выполненных единиц, шт</label>
+          <input
+            class="input"
+            id="qtyInput"
+            type="number"
+            inputmode="numeric"
+            placeholder="0"
+            min="0"
+          />
+        </div>
+
+        <div class="status" id="statusMsg"></div>
+
+        <div class="submit-wrap">
+          <button class="btn btn--submit" id="btnSubmit" onclick="submitTask()">
+            <span>✓</span>
+            <span>Отправить</span>
+          </button>
+        </div>
+
+      </div>
+    </div>
+
+    <script>
+      let timerInterval = null;
+      let elapsedSeconds = 0;
+      let isRunning = false;
+      let isPaused = false;
+      let isStopped = false;
+
+      const timerValue  = document.getElementById('timerValue');
+      const timerPanel  = document.getElementById('timerPanel');
+      const timerStatus = document.getElementById('timerStatus');
+      const btnStart    = document.getElementById('btnStart');
+      const btnPause    = document.getElementById('btnPause');
+      const btnStop     = document.getElementById('btnStop');
+      const pauseIcon   = document.getElementById('pauseIcon');
+      const pauseLabel  = document.getElementById('pauseLabel');
+      const statusMsg   = document.getElementById('statusMsg');
+
+      function pad(n) {
+        return String(n).padStart(2, '0');
+      }
+
+      function formatTime(s) {
+        const h = Math.floor(s / 3600);
+        const m = Math.floor((s % 3600) / 60);
+        return pad(h) + ':' + pad(m);
+      }
+
+      function startTimer() {
+        if (isRunning) return;
+        isRunning = true;
+        isPaused = false;
+        isStopped = false;
+
+        btnStart.disabled = true;
+        btnPause.disabled = false;
+        btnStop.disabled = false;
+
+        timerPanel.classList.add('is-running');
+        timerValue.classList.add('is-running');
+        timerStatus.textContent = 'Выполняется…';
+
+        timerInterval = setInterval(function () {
+          elapsedSeconds++;
+          timerValue.textContent = formatTime(elapsedSeconds);
+        }, 1000);
+      }
+
+      function togglePause() {
+        if (!isRunning) return;
+
+        if (!isPaused) {
+          clearInterval(timerInterval);
+          isPaused = true;
+
+          timerPanel.classList.remove('is-running');
+          timerPanel.classList.add('is-paused');
+          timerValue.classList.remove('is-running');
+          timerValue.classList.add('is-paused');
+          timerStatus.textContent = 'На паузе';
+
+          pauseIcon.textContent = '▶';
+          pauseLabel.textContent = 'Продолжить';
+          btnPause.classList.remove('btn--pause');
+          btnPause.classList.add('btn--resume');
+        } else {
+          isPaused = false;
+
+          timerPanel.classList.remove('is-paused');
+          timerPanel.classList.add('is-running');
+          timerValue.classList.remove('is-paused');
+          timerValue.classList.add('is-running');
+          timerStatus.textContent = 'Выполняется…';
+
+          pauseIcon.textContent = '⏸';
+          pauseLabel.textContent = 'Пауза';
+          btnPause.classList.remove('btn--resume');
+          btnPause.classList.add('btn--pause');
+
+          timerInterval = setInterval(function () {
+            elapsedSeconds++;
+            timerValue.textContent = formatTime(elapsedSeconds);
+          }, 1000);
+        }
+      }
+
+      function stopTimer() {
+        if (!isRunning) return;
+        clearInterval(timerInterval);
+        isRunning = false;
+        isStopped = true;
+
+        timerPanel.classList.remove('is-running', 'is-paused');
+        timerValue.classList.remove('is-running', 'is-paused');
+        timerStatus.textContent = 'Остановлен · ' + formatTime(elapsedSeconds);
+
+        btnPause.disabled = true;
+        btnStop.disabled = true;
+
+        pauseIcon.textContent = '⏸';
+        pauseLabel.textContent = 'Пауза';
+        btnPause.classList.remove('btn--resume');
+        btnPause.classList.add('btn--pause');
+      }
+
+      function showStatus(type, text) {
+        statusMsg.className = 'status is-visible status--' + type;
+        statusMsg.textContent = text;
+      }
+
+      function submitTask() {
+        const qty = document.getElementById('qtyInput').value.trim();
+
+        if (!isStopped) {
+          showStatus('error', 'Сначала запустите и остановите таймер.');
+          return;
+        }
+
+        if (qty === '' || Number(qty) < 0) {
+          showStatus('error', 'Укажите количество выполненных единиц.');
+          return;
+        }
+
+        const btnSubmit = document.getElementById('btnSubmit');
+        btnSubmit.disabled = true;
+        btnSubmit.querySelector('span:last-child').textContent = 'Отправка…';
+
+        setTimeout(function () {
+          showStatus('success', 'Данные отправлены. Время: ' + formatTime(elapsedSeconds) + ' · Количество: ' + qty + ' шт.');
+          btnSubmit.disabled = false;
+          btnSubmit.querySelector('span:last-child').textContent = 'Отправить';
+        }, 800);
+      }
+    </script>
+  </body>
+</html>
