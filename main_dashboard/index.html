@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>T-BOX Dashboard</title>
+  <style>
+    /* ── Reset & tokens ── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg:         #f2f2f7;
+      --surface:    #ffffff;
+      --surface2:   #f9f9fb;
+      --border:     rgba(0,0,0,.07);
+      --text-1:     #1c1c1e;
+      --text-2:     #3a3a3c;
+      --text-3:     #8e8e93;
+      --text-4:     #aeaeb2;
+      --green:      #30d158;
+      --red:        #ff453a;
+      --blue:       #007aff;
+      --shadow-sm:  0 1px 4px rgba(0,0,0,.07), 0 0 0 1px rgba(0,0,0,.05);
+      --shadow-md:  0 4px 20px rgba(0,0,0,.10), 0 0 0 1px rgba(0,0,0,.05);
+      --radius:     18px;
+      --font:       -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    }
+
+    html { font-size: 16px; }
+    body {
+      font-family: var(--font);
+      background: var(--bg);
+      color: var(--text-1);
+      min-height: 100vh;
+      padding: 32px 24px 56px;
+    }
+
+    /* ── Top bar ── */
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 36px;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .logo-box {
+      width: 40px; height: 40px;
+      background: var(--text-1);
+      border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+    .logo-box span {
+      color: #fff;
+      font-size: 13px;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+    }
+    .logo-name {
+      font-size: 20px;
+      font-weight: 700;
+      letter-spacing: -0.4px;
+    }
+    .topbar-meta {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .meta-pill {
+      font-size: 12px;
+      color: var(--text-3);
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 5px 12px;
+      white-space: nowrap;
+    }
+    .refresh-btn {
+      font-size: 13px;
+      font-family: var(--font);
+      color: var(--blue);
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 5px 14px;
+      cursor: pointer;
+      transition: background .15s, box-shadow .15s;
+    }
+    .refresh-btn:hover { background: #f0f6ff; box-shadow: var(--shadow-sm); }
+    .refresh-btn:disabled { opacity: .5; cursor: default; }
+
+    /* ── Section ── */
+    .section { margin-bottom: 32px; }
+    .section-label {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: .8px;
+      text-transform: uppercase;
+      color: var(--text-3);
+      margin-bottom: 14px;
+      padding-left: 2px;
+    }
+
+    /* ── Cards grid ── */
+    .cards-row {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 14px;
+    }
+
+    /* ── Card ── */
+    .card {
+      background: var(--surface);
+      border-radius: var(--radius);
+      padding: 22px 22px 20px;
+      box-shadow: var(--shadow-sm);
+      transition: box-shadow .2s, transform .15s;
+    }
+    .card:hover { box-shadow: var(--shadow-md); transform: translateY(-1px); }
+
+    .card-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 20px;
+    }
+    .card-title { font-size: 13px; font-weight: 600; color: var(--text-2); letter-spacing: .1px; }
+    .card-link {
+      font-size: 16px;
+      color: var(--blue);
+      text-decoration: none;
+      opacity: .7;
+      transition: opacity .15s;
+      line-height: 1;
+    }
+    .card-link:hover { opacity: 1; }
+
+    /* Balance */
+    .balance-block { margin-bottom: 20px; }
+    .balance-amount {
+      font-size: 36px;
+      font-weight: 700;
+      letter-spacing: -1.5px;
+      line-height: 1;
+      margin-bottom: 6px;
+    }
+    .c-green  { color: var(--green); }
+    .c-red    { color: var(--red);   }
+    .c-neutral{ color: var(--text-3);}
+    .balance-sub { font-size: 11px; color: var(--text-4); letter-spacing: .3px; text-transform: uppercase; }
+
+    /* Divider */
+    .divider { height: 1px; background: var(--bg); margin: 0 -22px 16px; }
+
+    /* Meta row */
+    .meta-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+    .meta-row:last-child { margin-bottom: 0; }
+    .meta-key { font-size: 12px; color: var(--text-3); }
+    .meta-val { font-size: 12px; font-weight: 500; color: var(--text-2); }
+
+    /* States */
+    .skeleton {
+      background: linear-gradient(90deg, #ececec 25%, #f5f5f5 50%, #ececec 75%);
+      background-size: 200% 100%;
+      animation: shimmer 1.4s infinite;
+      border-radius: 6px;
+    }
+    .sk-balance { height: 36px; width: 140px; margin-bottom: 6px; }
+    .sk-sub     { height: 11px; width: 80px; }
+    .sk-meta    { height: 12px; width: 90px; }
+    @keyframes shimmer { 0%{background-position:200% 0} 100%{background-position:-200% 0} }
+
+    /* Error badge */
+    .err-badge {
+      display: inline-flex; align-items: center; gap: 5px;
+      font-size: 12px; color: var(--red);
+      background: #fff1f0; border: 1px solid #ffd6d3;
+      border-radius: 6px; padding: 4px 10px;
+    }
+
+    /* Watermark updated line */
+    .updated-row {
+      display: flex; align-items: center; gap: 6px;
+      margin-top: 4px;
+    }
+    .upd-dot {
+      width: 6px; height: 6px; border-radius: 50%;
+      background: var(--green);
+      flex-shrink: 0;
+    }
+    .upd-dot.stale { background: var(--text-4); }
+    .upd-text { font-size: 11px; color: var(--text-4); }
+
+    @media (max-width: 480px) {
+      body { padding: 20px 16px 40px; }
+      .balance-amount { font-size: 30px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ── Top bar ── -->
+<div class="topbar">
+  <div class="logo">
+    <div class="logo-box"><span>TB</span></div>
+    <div class="logo-name">T-BOX Dashboard</div>
+  </div>
+  <div class="topbar-meta">
+    <div class="meta-pill" id="ts-pill">Загрузка…</div>
+    <button class="refresh-btn" id="refresh-btn" onclick="loadData(true)">↻ Обновить</button>
+  </div>
+</div>
+
+<!-- ── ДДСки ── -->
+<div class="section">
+  <div class="section-label">ДДСки</div>
+  <div class="cards-row" id="dds-cards">
+
+    <!-- ДДС Илья -->
+    <div class="card" id="card-ilya">
+      <div class="card-head">
+        <span class="card-title">ДДС Илья</span>
+        <a class="card-link" href="https://docs.google.com/spreadsheets/d/1x-q_WK0fLkr1lwFMQE3bqViCfkQRb5vU8QCwkp4OjpU" target="_blank" title="Открыть таблицу">↗</a>
+      </div>
+      <div class="balance-block" id="ilya-balance">
+        <div class="skeleton sk-balance"></div>
+        <div class="skeleton sk-sub" style="margin-top:6px"></div>
+      </div>
+      <div class="divider"></div>
+      <div class="meta-row">
+        <span class="meta-key">Последняя дата</span>
+        <span class="meta-val" id="ilya-date"><div class="skeleton sk-meta"></div></span>
+      </div>
+      <div class="updated-row" id="ilya-upd" style="display:none"></div>
+    </div>
+
+    <!-- ДДС Кристина -->
+    <div class="card" id="card-kristina">
+      <div class="card-head">
+        <span class="card-title">ДДС Кристина</span>
+        <a class="card-link" href="https://docs.google.com/spreadsheets/d/1uhh60Ab5WrXOEizKUXhCK41XWSG6KLbOuuPgvw3XvoI" target="_blank" title="Открыть таблицу">↗</a>
+      </div>
+      <div class="balance-block" id="kristina-balance">
+        <div class="skeleton sk-balance"></div>
+        <div class="skeleton sk-sub" style="margin-top:6px"></div>
+      </div>
+      <div class="divider"></div>
+      <div class="meta-row">
+        <span class="meta-key">Последняя дата</span>
+        <span class="meta-val" id="kristina-date"><div class="skeleton sk-meta"></div></span>
+      </div>
+      <div class="updated-row" id="kristina-upd" style="display:none"></div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+// ── Fallback data (last fetched 2026-04-29) ──────────────────────
+const FALLBACK = {
+  updated_at: "2026-04-29T19:47:00Z",
+  sheets: {
+    ilya: {
+      balance: "-р.70 865",
+      last_date: "26.04",
+      url: "https://docs.google.com/spreadsheets/d/1x-q_WK0fLkr1lwFMQE3bqViCfkQRb5vU8QCwkp4OjpU"
+    },
+    kristina: {
+      balance: "-р.4 741",
+      last_date: "29.04.2026",
+      url: "https://docs.google.com/spreadsheets/d/1uhh60Ab5WrXOEizKUXhCK41XWSG6KLbOuuPgvw3XvoI"
+    }
+  }
+};
+
+// ── Helpers ─────────────────────────────────────────────────────
+function colorClass(balanceStr) {
+  if (!balanceStr) return 'c-neutral';
+  const s = balanceStr.replace(/[\s  ]/g, '');
+  if (s.startsWith('-') || s.startsWith('−')) return 'c-red';
+  if (s === '0' || s === 'р.0') return 'c-neutral';
+  return 'c-green';
+}
+
+function fmtDate(iso) {
+  if (!iso) return '—';
+  try {
+    return new Date(iso).toLocaleString('ru-RU', {
+      day: '2-digit', month: '2-digit', year: 'numeric',
+      hour: '2-digit', minute: '2-digit'
+    });
+  } catch { return iso; }
+}
+
+function isStale(iso) {
+  try { return Date.now() - new Date(iso).getTime() > 12 * 3600 * 1000; }
+  catch { return true; }
+}
+
+function renderCard(key, sheet, updatedAt, fromFallback) {
+  const prefix = key; // 'ilya' | 'kristina'
+  const bal    = sheet.balance || '—';
+  const cls    = colorClass(bal);
+  const date   = sheet.last_date || '—';
+
+  document.getElementById(`${prefix}-balance`).innerHTML = `
+    <div class="balance-amount ${cls}">${bal}</div>
+    <div class="balance-sub">Остаток (H1)</div>
+  `;
+  document.getElementById(`${prefix}-date`).textContent = date;
+
+  const updEl = document.getElementById(`${prefix}-upd`);
+  const stale = fromFallback || isStale(updatedAt);
+  updEl.style.display = 'flex';
+  updEl.innerHTML = `
+    <div class="upd-dot ${stale ? 'stale' : ''}"></div>
+    <span class="upd-text">${fromFallback ? 'Данные из кеша · ' : ''}${fmtDate(updatedAt)}</span>
+  `;
+}
+
+function renderError(key) {
+  document.getElementById(`${key}-balance`).innerHTML =
+    '<span class="err-badge">⚠ Ошибка загрузки</span>';
+  document.getElementById(`${key}-date`).textContent = '—';
+}
+
+// ── Main loader ──────────────────────────────────────────────────
+let loading = false;
+
+async function loadData(force = false) {
+  if (loading) return;
+  loading = true;
+  const btn = document.getElementById('refresh-btn');
+  btn.disabled = true;
+  btn.textContent = '…';
+
+  try {
+    // Fetch data.json (same-origin, cached by browser, force=no-cache on manual refresh)
+    const res = await fetch('./data.json', { cache: force ? 'no-cache' : 'default' });
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const data = await res.json();
+
+    const updatedAt = data.updated_at || null;
+    document.getElementById('ts-pill').textContent =
+      'Обновлено ' + fmtDate(updatedAt);
+
+    for (const [key, sheet] of Object.entries(data.sheets || {})) {
+      renderCard(key, sheet, updatedAt, false);
+    }
+  } catch (err) {
+    console.warn('[T-BOX] data.json unavailable, using fallback:', err.message);
+    document.getElementById('ts-pill').textContent = 'Кеш · ' + fmtDate(FALLBACK.updated_at);
+    for (const [key, sheet] of Object.entries(FALLBACK.sheets)) {
+      renderCard(key, sheet, FALLBACK.updated_at, true);
+    }
+  } finally {
+    loading = false;
+    btn.disabled = false;
+    btn.textContent = '↻ Обновить';
+  }
+}
+
+loadData();
+</script>
+</body>
+</html>
