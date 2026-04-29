@@ -46,9 +46,7 @@ jobs:
         run: pip install gspread google-auth
 
       - name: Refresh data.json
-        if: |
-          (github.event_name == 'schedule' || github.event_name == 'workflow_dispatch') &&
-          secrets.GOOGLE_CREDENTIALS != ''
+        if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
         env:
           GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }}
         run: python scripts/update_data.py
