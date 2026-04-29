@@ -121,8 +121,8 @@
       margin-bottom: 8px;
     }
     .meta-row:last-child { margin-bottom: 0; }
-    .meta-key { font-size: 12px; color: var(--t3); }
-    .meta-val { font-size: 12px; font-weight: 500; color: var(--t2); }
+    .meta-key { font-size: 14px; color: var(--t3); }
+    .meta-val { font-size: 14px; font-weight: 500; color: var(--t2); }
 
     /* Skeleton */
     .sk {
@@ -174,7 +174,7 @@
       </div>
       <div class="divider"></div>
       <div class="meta-row">
-        <span class="meta-key">Последняя дата</span>
+        <span class="meta-key">Последняя дата обновления ДДС</span>
         <span class="meta-val" id="ilya-date"><span class="sk" style="width:70px;height:12px"></span></span>
       </div>
     </div>
@@ -189,7 +189,7 @@
       </div>
       <div class="divider"></div>
       <div class="meta-row">
-        <span class="meta-key">Последняя дата</span>
+        <span class="meta-key">Последняя дата обновления ДДС</span>
         <span class="meta-val" id="kristina-date"><span class="sk" style="width:70px;height:12px"></span></span>
       </div>
     </div>
@@ -217,7 +217,7 @@ const SHEETS = {
 
 // ── Fallback (кеш последних известных данных) ─────────────────────────────
 const FALLBACK = {
-  ilya:     { balance: '−р.70 865', lastDate: '26.04' },
+  ilya:     { balance: '−р.70 865', lastDate: '26.04.2026' },
   kristina: { balance: '−р.4 741',  lastDate: '29.04.2026' },
 };
 
@@ -253,15 +253,31 @@ function extractH1(gvizData) {
   return cell.f ?? String(cell.v ?? '');
 }
 
+function formatDate(raw) {
+  if (!raw) return null;
+  const s = String(raw).trim();
+  const gviz = s.match(/^Date\((\d{4}),(\d{1,2}),(\d{1,2})\)$/);
+  if (gviz) {
+    const d = String(gviz[3]).padStart(2, '0');
+    const m = String(Number(gviz[2]) + 1).padStart(2, '0');
+    return `${d}.${m}.${gviz[1]}`;
+  }
+  if (/^\d{2}\.\d{2}\.\d{4}$/.test(s)) return s;
+  if (/^\d{2}\.\d{2}$/.test(s)) return `${s}.${new Date().getFullYear()}`;
+  const slash = s.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/);
+  if (slash) return `${String(slash[2]).padStart(2,'0')}.${String(slash[1]).padStart(2,'0')}.${slash[3]}`;
+  return s;
+}
+
 function extractLastDate(gvizData) {
   const rows = gvizData?.table?.rows ?? [];
   let last = null;
   for (const row of rows) {
     const v = row?.c?.[0];
     if (!v) continue;
-    const val = (v.f ?? String(v.v ?? '')).trim();
-    if (val && val !== 'дата' && val !== '???' && val !== '##') {
-      last = val;
+    const raw = String(v.v ?? v.f ?? '').trim();
+    if (raw && raw !== 'дата' && raw !== '???' && raw !== '##') {
+      last = formatDate(raw);
     }
   }
   return last;
